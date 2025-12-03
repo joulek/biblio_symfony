@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Catégorie{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+
+
+
+<!-- Carte + Form -->
+<div class="page-center">
+  <div class="card">
+    <!-- Bande -->
+    <div class="card-hero">
+      <i class="fa-solid fa-tags"></i>
+      <div>
+        <div style="font-weight:800; font-size:1.1rem; color:#FFF5F7;">Nouvelle Catégorie</div>
+        <div style="opacity:.85;">Saisissez les informations de la catégorie</div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      {{ include('categorie/_form.html.twig', { button_label: 'Enregistrer' }) }}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

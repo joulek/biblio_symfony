@@ -1,0 +1,38 @@
+<script src="{{ asset('js/navbar.js') }}"></script>
+
+<nav class="navbar">
+  <a href="{{ path('app_accueil') }}">Accueil</a>
+  <a href="{{ path('app_categorie_index') }}">Catégories</a>
+  <a href="{{ path('app_livre_index') }}">Livres</a>
+  <a href="{{ path('app_editeur_index') }}">Éditeurs</a>
+  <a href="{{ path('app_auteur_index') }}">Auteurs</a>
+  <a href="{{ path('app_contact') }}">Contact</a>
+  <a href="{{ path('app_about') }}">À propos</a>
+
+  {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('admin') }}" class="btn-admin">Dashboard</a>
+  {% endif %}
+
+  {% if app.user %}
+    <div class="navbar-right">
+      <div class="user-dropdown">
+        <button type="button" class="user-btn">
+          <i class="fa-solid fa-user"></i>
+
+          {{ app.user.prenom ?? '' }} {{ app.user.nom ?? '' }}
+
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="dropdown-menu">
+          <a href="{{ path('app_panier') }}">Mon Panier</a>
+          <a href="{{ path('app_commandes') }}">Mes Commandes</a>
+          <a href="{{ path('app_profile') }}">Mon Profil</a>
+          <a href="{{ path('app_logout') }}" class="logout">Déconnexion</a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <a href="{{ path('app_login') }}" class="btn-login-navbar">Connexion</a>
+  {% endif %}
+</nav>

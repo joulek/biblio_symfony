@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la Catégorie{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="card-hero">
+        <i class="fa-solid fa-tag"></i>
+        <div>
+            <div class="hero-title">{{ categorie.designation }}</div>
+        </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+        <div class="form-grid">
+
+            <div class="field col-12">
+                <label>Désignation</label>
+                <input type="text" value="{{ categorie.designation }}" readonly>
+            </div>
+
+        </div>
+{% if is_granted('ROLE_ADMIN') %}
+        <div class="actions">
+            <a class="btn btn-primary" href="{{ path('app_categorie_edit', {'id': categorie.id}) }}">
+                <i class="fa-regular fa-pen-to-square"></i> Modifier
+            </a>
+            <span class="inline-form">
+                {{ include('categorie/_delete_form.html.twig', {
+                    button_class: 'btn btn-danger',
+                    button_icon: 'fa-solid fa-trash',
+                    button_label: 'Supprimer'
+                }) }}
+            </span>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

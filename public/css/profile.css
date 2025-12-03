@@ -1,0 +1,115 @@
+/* === CONTAINER === */
+.profile-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; font-family:"Inter", sans-serif; }
+
+/* === HEADER === */
+.profile-header { text-align:center; margin-bottom:35px; }
+.profile-header h1 { font-size:2.4rem; color:#4c0f1a; font-weight:800; }
+.profile-header p { color:#6d3d48; }
+
+/* === GRID === */
+.profile-grid { display:grid; grid-template-columns:2fr 1fr; gap:25px; }
+@media(max-width:900px){ .profile-grid { grid-template-columns:1fr; }}
+
+/* === CARDS === */
+.profile-card {
+  background:linear-gradient(135deg,#fff5fb,#f5f0f8);
+  border:2px solid #ffe0f0;
+  border-radius:22px;
+  padding:25px;
+  box-shadow:0 8px 18px rgba(76,15,26,0.13);
+}
+
+/* === USER HEADER === */
+.profile-row { display:flex; align-items:center; gap:15px; }
+.avatar {
+  width:56px; height:56px; border-radius:15px; display:grid; place-items:center;
+  font-weight:800; font-size:22px;
+  background:#4c0f1a22; border:1px solid #4c0f1a66; color:#4c0f1a;
+}
+.main-card h2 { margin:0; font-size:1.3rem; color:#4c0f1a; font-weight:700; }
+.email { font-size:0.9rem; color:#6d3d48; }
+
+/* === INFO ITEMS === */
+.info-list { margin-top:20px; }
+.info-item {
+  background:white; padding:10px 14px; border-radius:10px;
+  border:1px solid #ffe0f0; margin-bottom:8px;
+  display:flex; justify-content:space-between; font-size:0.95rem;
+}
+.info-item span { font-weight:700; color:#4c0f1a; }
+
+/* === BUTTONS === */
+.actions { margin-top:20px; display:flex; gap:12px; }
+.btn {
+  border:none; padding:10px 18px; border-radius:12px;
+  font-weight:600; cursor:pointer; transition:.3s;
+}
+.btn.edit { background:#4c0f1a; color:white; }
+.btn.password { background:#763248; color:white; }
+.btn.edit:hover { background:#2d0611; }
+.btn.password:hover { background:#501728; }
+
+/* === ROW BUTTONS === */
+.side-card h3 { margin-bottom:15px; color:#4c0f1a; }
+.link-btn {
+  width:100%; background:white; border:1px solid #ffe0f0; padding:12px;
+  border-radius:12px; text-align:left; font-weight:600; margin-bottom:8px;
+}
+.link-btn:hover { background:#f7eaea; }
+
+/* === MODALS === */
+.modal-styled { border-radius:18px; background:white; padding:20px; }
+.btn.save { background:#4c0f1a; color:white; }
+.btn.danger { background:#a21010; color:white; }
+/* 🎨 STYLE DES CHAMPS DANS LES MODALS */
+.modal-styled .form-control,
+.modal-styled input[type="text"],
+.modal-styled input[type="email"],
+.modal-styled input[type="password"],
+.modal-styled input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid #ffe0f0;
+  background: #fffafa;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  color: #4c0f1a;
+}
+
+.modal-styled input::placeholder {
+  color: #a17380;
+}
+
+/* 🔍 Effet focus */
+.modal-styled input:focus {
+  outline: none;
+  border-color: #4c0f1a;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(76, 15, 26, 0.3);
+}
+
+/* 🏷️ Labels harmonisés */
+.modal-styled label {
+  font-weight: 600;
+  color: #4c0f1a;
+  margin-bottom: 6px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+/* 📏 Marge entre champs */
+.modal-styled .form-group,
+.modal-styled .form-row,
+.modal-styled div {
+  margin-bottom: 12px;
+}
+
+/* ✨ Amélioration du bouton */
+.modal-styled .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: bold;
+}

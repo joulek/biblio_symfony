@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditeurs{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/editeur-cards.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<!-- Header -->
+<div class="page-header">
+    <h1 class="page-title">Nos Éditeurs</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="actions">
+            <a class="btn btn-primary" href="{{ path('app_editeur_new') }}">
+                <i class="fa-solid fa-plus"></i> Nouvel éditeur
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Cartes des éditeurs -->
+<div class="editeurs-grid">
+    {% for editeur in editeurs %}
+        <div class="editeur-card">
+            <div class="editeur-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <h3>{{ editeur.nom }}</h3>
+            <p>📍 {{ editeur.pays ?: '—' }}</p>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="editeur-actions">
+                    <a href="{{ path('app_editeur_show', {'id': editeur.id}) }}" title="Voir">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+                    <a href="{{ path('app_editeur_edit', {'id': editeur.id}) }}" title="Modifier">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                </div>
+            {% else %}
+                <a href="{{ path('app_editeur_show', {'id': editeur.id}) }}" class="editeur-btn">
+                    Voir détails
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Aucun éditeur trouvé.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

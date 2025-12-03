@@ -1,0 +1,8 @@
+{# templates/livre/_delete_form.html.twig #}
+<form method="post" action="{{ path('app_livre_delete', {'id': livre.id}) }}" onsubmit="return confirm('Supprimer ce livre ?');">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
+  <button class="{{ button_class|default('btn btn-danger') }}">
+    {% if button_icon is defined %}<i class="{{ button_icon }}"></i>{% endif %}
+    {{ button_label|default('Delete') }}
+  </button>
+</form>

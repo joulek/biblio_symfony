@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #6d2534, #8b3a4a);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 0 0 10px 10px;
+        }
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #6d2534;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #6d2534;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #6d2534;
+            color: white;
+        }
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #6d2534;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #666;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #6d2534;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>✅ Commande Confirmée !</h1>
+        <p>Merci pour votre confiance</p>
+    </div>
+
+    <div class="content">
+        <p>Bonjour <strong>{{ user.prenom }} {{ user.nom }}</strong>,</p>
+
+        <p>Nous avons bien reçu votre commande n°<strong>{{ commande.id }}</strong> passée le <strong>{{ commande.date|date('d/m/Y à H:i') }}</strong>.</p>
+
+        <div class="info-box">
+            <h3>📦 Informations de livraison</h3>
+            <p><strong>Adresse :</strong> {{ commande.adresse }}</p>
+            <p><strong>Mode de paiement :</strong> {{ commande.modePaiement }}</p>
+        </div>
+
+        <div class="info-box">
+            <h3>📚 Détails de votre commande</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Livre</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in commande.commandeItems %}
+                    <tr>
+                        <td>{{ item.livre.titre }}</td>
+                        <td>{{ item.quantite }}</td>
+                        <td>{{ item.prix }} DT</td>
+                        <td>{{ item.quantite * item.prix }} DT</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <p class="total">TOTAL : {{ commande.total }} DT</p>
+        </div>
+
+        <p><strong>📎 Votre facture est jointe à cet email au format PDF.</strong></p>
+
+        <p>Votre commande sera traitée dans les plus brefs délais.</p>
+
+        <div style="text-align: center;">
+            <a href="{{ url('app_commandes') }}" class="button">Voir mes commandes</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Merci d'avoir choisi notre bibliothèque !</p>
+        <p>Pour toute question, n'hésitez pas à nous contacter.</p>
+        <p style="font-size: 12px; color: #999;">
+            Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+        </p>
+    </div>
+</body>
+</html>

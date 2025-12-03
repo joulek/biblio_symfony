@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos de nous{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/about.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+
+
+{% endblock %}
+
+{% block body %}
+<div class="about-container">
+    <div class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero-about">
+            <h1 class="about-title">À propos de notre Bibliothèque</h1>
+            <p class="about-subtitle">
+                Une plateforme moderne et innovante pour explorer, commander et gérer vos livres préférés en toute simplicité.
+            </p>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <h2>💡 Notre Mission</h2>
+            <p>
+                Offrir une expérience simple, rapide et intuitive pour consulter, réserver ou acheter des livres.
+                Nous avons conçu une interface agréable et moderne afin de rendre la lecture plus accessible à tous.
+                Notre objectif est de connecter les passionnés de lecture avec leurs prochaines découvertes littéraires.
+            </p>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <h2 class="services-title">🚀 Nos Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">📖</div>
+                    <h3>Exploration des Livres</h3>
+                    <p>Parcourez notre vaste catalogue de livres avec une interface intuitive et des filtres avancés pour trouver exactement ce que vous cherchez.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🛒</div>
+                    <h3>Gestion de Panier</h3>
+                    <p>Ajoutez vos livres favoris au panier, gérez vos quantités et passez commande en quelques clics seulement.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">👤</div>
+                    <h3>Profils Personnalisés</h3>
+                    <p>Créez votre profil utilisateur personnalisé pour suivre vos commandes, gérer vos préférences et sauvegarder vos favoris.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Espace Administrateur</h3>
+                    <p>Un tableau de bord complet pour gérer les livres, les commandes et les utilisateurs avec efficacité.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">💳</div>
+                    <h3>Paiements Sécurisés</h3>
+                    <p>Profitez de plusieurs options de paiement sécurisées : carte bancaire, PayPal ou paiement à la livraison.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Historique Complet</h3>
+                    <p>Consultez l'historique détaillé de toutes vos commandes et suivez leur statut en temps réel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Engagement Section -->
+        <section class="engagement-section">
+            <h2>🤝 Notre Engagement</h2>
+            <p>
+                Nous nous engageons à fournir une plateforme fluide, rapide et sécurisée.
+                Votre satisfaction est notre priorité absolue. Nous travaillons chaque jour pour améliorer
+                votre expérience et vous offrir le meilleur service possible.
+            </p>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h2>📞 Contactez-nous</h2>
+            <p>
+                Une question ? Une suggestion ? N'hésitez pas à nous contacter !<br>
+                Notre équipe est à votre écoute pour vous accompagner.
+            </p>
+            <a href="{{ path('app_contact') }}" class="contact-btn">Nous Contacter</a>
+        </section>
+    </div>
+</div>
+{% endblock %}

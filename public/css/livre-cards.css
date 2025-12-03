@@ -1,0 +1,134 @@
+/* 🎨 Palette */
+:root {
+  --maroon:#4C0F1A;
+  --maroon-2:#5E1223;
+  --maroon-3:#6A2136;
+  --soft:#FDF9F9;
+}
+
+/* 🔥 Grille des cartes */
+.livre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  padding: 30px 20px;
+  max-width: 1350px;
+  margin: auto;
+}
+
+/* 📚 Carte */
+.livre-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(76, 15, 26, .12);
+  overflow: hidden;
+  border: 1px solid rgba(76,15,26,.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.livre-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(76, 15, 26, .15);
+}
+
+/* 📸 Image */
+.livre-card img,
+.no-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+/* 📝 Texte */
+.livre-title {
+  margin: 14px 0 6px;
+  font-size: 1.25rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--maroon-2);
+}
+
+.livre-info {
+  font-size: 0.95rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.livre-info i {
+  color: var(--maroon);
+  font-size: 1rem;
+}
+
+/* 🎯 Boutons en ligne */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 12px 18px;
+  margin-top: auto;
+}
+
+/* style général boutons */
+.btn-action {
+  flex: 1;
+  background: var(--maroon);
+  color: #fff;
+  padding: 11px 8px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.btn-action:hover {
+  background: var(--maroon-3);
+  transform: translateY(-3px);
+}
+
+.btn-cart i {
+  margin-right: 5px;
+}
+
+/* 🛠 Actions admin */
+.actions-admin {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.actions-admin a,
+.actions-admin button {
+  background: #fff;
+  border: 1px solid rgba(76,15,26,.25);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--maroon);
+  transition: .2s ease;
+}
+
+.actions-admin a:hover,
+.actions-admin button:hover {
+  background: var(--maroon-3);
+  color: white;
+}
+
+/* Header centré */
+.page-header-centered {
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding-top: 60px;
+}

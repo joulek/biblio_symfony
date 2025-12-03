@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/panier.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1 class="mb-4">📦 Mes commandes</h1>
+
+    {% if commandes is empty %}
+        <div class="alert alert-warning">Vous n'avez aucune commande pour le moment.</div>
+    {% else %}
+
+        <table class="table table-bordered align-middle" style="border-radius:12px; overflow:hidden;">
+            <thead style="background:#4c0f1a; color:white;">
+                <tr>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Articles (Qté totale)</th>
+                    <th>Facture</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+                    <td><strong>{{ commande.total }} DT</strong></td>
+
+                    {# 🔥 Correction pour afficher la somme des quantités #}
+                    <td>
+                        {% set totalQuantite = 0 %}
+                        {% for item in commande.commandeItems %}
+                            {% set totalQuantite = totalQuantite + item.quantite %}
+                        {% endfor %}
+                        {{ totalQuantite }}
+                    </td>
+
+                    <td>
+                        <a href="{{ path('app_commande_facture', { id: commande.id }) }}"
+                           class="btn btn-sm"
+                           style="
+                               background:#4c0f1a;
+                               color:white;
+                               font-weight:600;
+                               border-radius:8px;
+                               padding:6px 14px;
+                               transition:0.2s ease;">
+                            📄 Télécharger PDF
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+
+</div>
+{% endblock %}

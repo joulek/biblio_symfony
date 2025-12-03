@@ -1,0 +1,127 @@
+/* === CARTES CATÉGORIES === */
+:root {
+  --maroon:#4C0F1A;
+  --maroon-2:#5E1223;
+  --maroon-3:#6A2136;
+  --soft:#FDF9F9;
+}
+
+/* Conteneur */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Carte */
+.categorie-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(76, 15, 26, 0.15);
+  border: 1px solid rgba(76, 15, 26, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.25s;
+}
+
+.categorie-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76,15,26,.25);
+}
+
+/* Titre */
+.categorie-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--maroon-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Bouton utilisateur */
+.categorie-btn {
+  display: inline-block;
+  padding: 8px 15px;
+  background: var(--maroon);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: 0.25s;
+}
+
+.categorie-btn:hover {
+  background: var(--maroon-3);
+  transform: translateY(-2px);
+}
+
+/* Actions admin */
+.categorie-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.categorie-actions a {
+  color: var(--maroon);
+  font-size: 1.2rem;
+  transition: color 0.25s;
+}
+
+.categorie-actions a:hover {
+  color: var(--maroon-3);
+}
+
+/* SECTION GÉNÉRALE */
+.categories-section {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 40px 30px;
+  background: #fff5f7; /* Fond léger */
+  border-radius: 18px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+/* SOUS-TITRE */
+.subtitle {
+  color: #777;
+  font-size: 1rem;
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
+
+/* GRILLE AMÉLIORÉE */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  justify-items: center;
+}
+
+/* CARTE PLUS GRANDE */
+.categorie-card {
+  max-width: 320px;
+  width: 100%;
+  padding: 28px;
+  text-align: center;
+  transition: transform .3s ease, box-shadow .2s;
+}
+
+/* ICÔNE DÉCORATIVE */
+.cat-image {
+  font-size: 2.2rem;
+  color: var(--maroon-2);
+  margin-bottom: 12px;
+}
+
+/* HOVER */
+.categorie-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(76, 15, 26, 0.25);
+}

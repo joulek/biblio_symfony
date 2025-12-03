@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Catégories{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/categorie-cards.css') }}">
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<div class="page-header">
+    <h1 class="page-title">Nos Catégories</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="actions">
+            <a class="btn btn-primary" href="{{ path('app_categorie_new') }}">
+                <i class="fa-solid fa-plus"></i> Nouvelle catégorie
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="categories-grid">
+    {% for categorie in categories %}
+        <div class="categorie-card">
+            <div class="categorie-title">
+                <i class="fa-solid fa-tag"></i> {{ categorie.designation }}
+            </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="categorie-actions">
+                    <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" title="Voir">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+                    <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" title="Modifier">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                </div>
+            {% else %}
+                <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="categorie-btn">
+                    Voir détails
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Aucune catégorie trouvée.</p>
+    {% endfor %}
+</div>
+{% endblock %}

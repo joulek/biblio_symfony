@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+<link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+
+{% endblock %}
+
+{% block body %}
+<div class="profile-container">
+
+    <section class="profile-header">
+        <h1>👤 Mon Profil</h1>
+        <p>Gérez vos informations personnelles et votre compte.</p>
+    </section>
+
+    <div class="profile-grid">
+        <!-- ==================== Infos utilisateur ==================== -->
+        <section class="profile-card main-card">
+            <div class="profile-row">
+                <div class="avatar">{{ (app.user.prenom ~ ' ' ~ app.user.nom)|first|upper }}</div>
+                <div>
+                    <h2>{{ app.user.prenom }} {{ app.user.nom }}</h2>
+                    <span class="email">{{ app.user.email }}</span>
+                </div>
+            </div>
+
+            <div class="info-list">
+                <div class="info-item"><span>Nom :</span> {{ app.user.nom }}</div>
+                <div class="info-item"><span>Prénom :</span> {{ app.user.prenom }}</div>
+                <div class="info-item"><span>Email :</span> {{ app.user.email }}</div>
+                <div class="info-item"><span>Téléphone :</span> {{ app.user.numTel ?? '-' }}</div>
+            </div>
+
+            <div class="actions">
+                <button class="btn edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">✏️ Modifier</button>
+                <button class="btn password" data-bs-toggle="modal" data-bs-target="#editPasswordModal">🔒 Mot de passe</button>
+            </div>
+        </section>
+
+        <!-- ==================== Raccourcis ==================== -->
+        <section class="profile-card side-card">
+            <h3>📎 Raccourcis</h3>
+            <button class="link-btn" onclick="window.location.href='{{ path('app_accueil') }}'">🏠 Accueil</button>
+            <button class="link-btn" onclick="window.location.href='{{ path('app_contact') }}'">📩 Contact</button>
+            <button class="link-btn" onclick="window.location.href='{{ path('app_about') }}'">ℹ️ À propos</button>
+        </section>
+    </div>
+
+    {# Messages flash #}
+    {% for success in app.flashes('profile_success') %}
+      <div class="alert alert-success">{{ success }}</div>
+    {% endfor %}
+    {% for error in app.flashes('error') %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+</div>
+
+{# ================== MODAL: Modifier infos ================== #}
+<div class="modal fade" id="editProfileModal">
+  <div class="modal-dialog"><div class="modal-content modal-styled">
+      <div class="modal-header"><h5>✏️ Modifier mes informations</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        {{ form_start(profileForm) }}
+        {{ form_row(profileForm.email) }}
+        {{ form_row(profileForm.nom) }}
+        {{ form_row(profileForm.prenom) }}
+        {{ form_row(profileForm.numTel) }}
+        <button class="btn save mt-3">💾 Enregistrer</button>
+        {{ form_end(profileForm) }}
+      </div>
+  </div></div>
+</div>
+
+{# ================== MODAL: Mot de passe ================== #}
+<div class="modal fade" id="editPasswordModal">
+  <div class="modal-dialog"><div class="modal-content modal-styled">
+      <div class="modal-header"><h5>🔒 Changer le mot de passe</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        {{ form_start(passwordForm) }}
+        {{ form_row(passwordForm.oldPassword) }}
+        {{ form_row(passwordForm.newPassword.first) }}
+        {{ form_row(passwordForm.newPassword.second) }}
+        <button class="btn danger mt-3">🔐 Mettre à jour</button>
+        {{ form_end(passwordForm) }}
+      </div>
+  </div></div>
+</div>
+{% endblock %}

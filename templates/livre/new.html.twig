@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter Livre{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+
+<div class="card">
+    <div class="card-hero">
+        <i class="fa-solid fa-book-medical"></i>
+        <div>
+            <div class="hero-title">Ajouter un Livre</div>
+            <div class="hero-subtitle">Saisissez les informations du livre</div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        {{ include('livre/_form.html.twig', { button_label: 'Enregistrer' }) }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Mon Panier
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/panier.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+  <div class="panier-container">
+    <h1 class="panier-title">Mon Panier</h1>
+
+    {% if panier is null or (panier.panierItems|length) == 0 %}
+      <div class="panier-empty">
+        <p>Votre panier est vide.</p>
+      </div>
+    {% else %}
+      <div class="panier-items-grid">
+        {% set total = 0 %}
+
+        {% for item in panier.panierItems %}
+          {% set line_total = item.livre.prixunitaire * item.quantite %}
+          {% set total = total + line_total %}
+
+          <div class="panier-item-card">
+            <img class="panier-item-image" src="{{ asset('uploads/livres/' ~ item.livre.image) }}" alt="{{ item.livre.titre }}" />
+
+            <div class="panier-item-info">
+              <h3 class="panier-item-title">{{ item.livre.titre }}</h3>
+
+              <p class="panier-item-price">
+                Prix : <strong>{{ item.livre.prixunitaire }} DT</strong>
+              </p>
+
+              <div class="quantity-box">
+                <a href="{{ path('panier_decrement', { id: item.id }) }}" class="quantity-btn minus">−</a>
+
+                <span class="quantity-number">{{ item.quantite }}</span>
+
+                <a href="{{ path('panier_increment', { id: item.id }) }}" class="quantity-btn plus">+</a>
+              </div>
+
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="panier-total-box">
+        <p>
+          💰 Total : <strong>{{ total }} DT</strong>
+        </p>
+        <button type="button" class="btn-commander" data-bs-toggle="modal" data-bs-target="#commandeModal">
+    🧾 Commander
+</button>
+
+      </div>
+    {% endif %}
+
+     <button type="button" class="btn-commander" onclick="window.location.href='{{ path('app_livre_index') }}'">
+    Continuer mes achats
+</button>
+  </div>
+
+{# Modal de commande #}
+<div class="modal fade" id="commandeModal" tabindex="-1" aria-labelledby="commandeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <form method="post" action="{{ path('app_commande_valider') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commandeModalLabel">Finaliser ma commande</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+
+        <div class="modal-body">
+
+          {# 🔵 NOM #}
+          <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" name="nom" class="form-control"
+                   value="{{ app.user.nom }}" required>
+          </div>
+
+          {# 🔵 PRÉNOM #}
+          <div class="mb-3">
+            <label class="form-label">Prénom</label>
+            <input type="text" name="prenom" class="form-control"
+                   value="{{ app.user.prenom }}" required>
+          </div>
+
+          {# 🔵 TÉLÉPHONE #}
+          <div class="mb-3">
+            <label class="form-label">Numéro de téléphone</label>
+            <input type="text" name="numTel" class="form-control"
+                   value="{{ app.user.numTel }}" required>
+          </div>
+
+          {# 🟤 ADRESSE DE LIVRAISON #}
+          <div class="mb-3">
+            <label for="adresse" class="form-label">Adresse de livraison</label>
+            <textarea class="form-control" id="adresse" name="adresse" rows="3" required></textarea>
+          </div>
+
+          {# 🟢 MODE DE PAIEMENT #}
+          <div class="mb-3">
+            <label class="form-label d-block">Mode de paiement</label>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="mode_paiement" id="paiement_carte" value="carte" checked>
+              <label class="form-check-label" for="paiement_carte">
+                💳 Carte bancaire
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="mode_paiement" id="paiement_livraison" value="livraison">
+              <label class="form-check-label" for="paiement_livraison">
+                🚚 Paiement à la livraison
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Confirmer la commande</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

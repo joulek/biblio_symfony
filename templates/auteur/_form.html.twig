@@ -1,0 +1,32 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+
+{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+
+  <div class="form-grid">
+    <div class="field col-6">
+      {{ form_label(form.nom, 'Nom') }}
+      <div class="control">
+        {{ form_widget(form.nom, {'attr': {'placeholder':'Ex. Camus'}}) }}
+        {{ form_errors(form.nom) ? '<div class="error">' ~ form_errors(form.nom) ~ '</div>' }}
+      </div>
+    </div>
+
+    <div class="field col-6">
+      {{ form_label(form.prenom, 'Prénom') }}
+      <div class="control">
+        {{ form_widget(form.prenom, {'attr': {'placeholder':'Ex. Albert'}}) }}
+        {{ form_errors(form.prenom) ? '<div class="error">' ~ form_errors(form.prenom) ~ '</div>' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn-primary">
+      <i class="fa-solid fa-check"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+  </div>
+
+{{ form_end(form) }}

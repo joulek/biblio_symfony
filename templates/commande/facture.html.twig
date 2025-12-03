@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; }
+        h1 { text-align: center; color: #4c0f1a; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: left;
+        }
+        .total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Facture - Commande n°{{ commande.id }}</h1>
+
+<p><strong>Date :</strong> {{ commande.date|date('d/m/Y H:i') }}</p>
+<p><strong>Client :</strong> {{ commande.user.prenom }} {{ commande.user.nom }}</p>
+<p><strong>Adresse de livraison :</strong> {{ commande.adresse }}</p>
+
+<h3>Détails des articles</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Livre</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in commande.commandeItems %}
+        <tr>
+            <td>{{ item.livre.titre }}</td>
+            <td>{{ item.quantite }}</td>
+            <td>{{ item.prix }} DT</td>
+            <td>{{ item.quantite * item.prix }} DT</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p class="total">TOTAL : {{ commande.total }} DT</p>
+
+</body>
+</html>

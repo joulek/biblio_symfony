@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <style>
+.hero {
+  min-height: 240px;
+  padding: 140px 20px 120px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(160deg, rgba(94, 18, 35, 0.85), rgba(76, 15, 26, 0.88)),
+    url('{{ asset("images/hero_section.png") }}') center/cover no-repeat;
+}
+    </style>
+{% endblock %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <h1>Bienvenue dans notre Bibliothèque</h1>
+  <p>Un univers de lecture, d’émotions et d’inspiration.</p>
+</section>
+
+<!-- ================= 4 CARTES PRINCIPALES ================= -->
+<div class="card-container">
+  <div class="card">
+    <i class="fa-solid fa-book fa-2x icon"></i>
+    <h2>Livres</h2>
+    <a href="{{ path('app_livre_index') }}">Explorer</a>
+  </div>
+
+  <div class="card">
+    <i class="fa-solid fa-user fa-2x icon"></i>
+    <h2>Auteurs</h2>
+    <a href="{{ path('app_auteur_index') }}">Explorer</a>
+  </div>
+
+  <div class="card">
+    <i class="fa-solid fa-tags fa-2x icon"></i>
+    <h2>Catégories</h2>
+    <a href="{{ path('app_categorie_index') }}">Explorer</a>
+  </div>
+
+  <div class="card">
+    <i class="fa-solid fa-building fa-2x icon"></i>
+    <h2>Éditeurs</h2>
+    <a href="{{ path('app_editeur_index') }}">Explorer</a>
+  </div>
+</div>
+
+<!-- ================= SECTION : DERNIERS LIVRES ================= -->
+<section class="section-livres">
+  <h2 class="section-title">Derniers Livres</h2>
+
+  <div class="livres-grid">
+    {% for livre in livres %}
+      <div class="livre-card">
+
+        {% if livre.image %}
+          <img src="{{ asset('uploads/livres/' ~ livre.image) }}" alt="{{ livre.titre }}">
+        {% else %}
+          <img src="{{ asset('img/default-book.png') }}" alt="Image par défaut">
+        {% endif %}
+
+        <h3>{{ livre.titre }}</h3>
+        <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="btn-view">Voir</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ================= SECTION : AUTEURS ================= -->
+<section class="section-livres">
+  <h2 class="section-title">Nos Auteurs</h2>
+
+  <div class="livres-grid">
+    {% for auteur in auteurs %}
+      <div class="livre-card auteur-card">
+        <i class="fa-solid fa-user fa-2x auteur-icon"></i>
+        <h3>{{ auteur.nom }} {{ auteur.prenom }}</h3>
+        <a href="{{ path('app_auteur_show', {'id': auteur.id}) }}" class="btn-view">Voir</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

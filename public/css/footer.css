@@ -1,0 +1,125 @@
+:root{
+  --bordeaux-900:#4a0d1f;   /* très sombre */
+  --bordeaux-800:#5b0f26;
+  --bordeaux-700:#6b1029;
+  --bordeaux-600:#7c1330;   /* proche de ton hero */
+  --rose-100:#f8e9ed;
+  --txt:#f4f4f5;
+  --txt-dim:#e9e9eb;
+  --card-bg:#ffffff;
+}
+
+.site-footer{
+  margin-top: 3rem;
+  color: var(--txt);
+  background:
+    radial-gradient(1200px 500px at 10% -20%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(900px 400px at 90% -10%, rgba(255,255,255,.07), transparent 60%),
+    linear-gradient(180deg, var(--bordeaux-700), var(--bordeaux-900));
+  position: relative;
+  overflow: hidden;
+}
+
+.site-footer .footer-wave svg{
+  width: 100%; height: 90px; display: block;
+}
+.site-footer .footer-wave path{
+  fill: #fff; /* tranche blanche entre contenu et footer */
+  opacity: .9;
+}
+
+.site-footer .footer-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1.1fr .7fr .9fr;
+  gap: 2rem;
+}
+
+.site-footer h4{
+  font-size: 1.05rem;
+  margin: .2rem 0 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.site-footer p{ color: var(--txt-dim); line-height: 1.7; }
+
+.site-footer ul{ list-style: none; padding: 0; margin: 0; }
+.site-footer li{ margin: .5rem 0; }
+.site-footer a{
+  color: #fff; text-decoration: none; opacity: .9; transition: opacity .2s, transform .2s;
+}
+.site-footer a:hover{ opacity: 1; transform: translateY(-1px); }
+
+.footer-social{ display:flex; gap:.6rem; margin-top: .8rem; }
+.footer-social a{
+  width: 36px; height: 36px; display:grid; place-items:center;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+.footer-contact i{ width: 20px; margin-right:.5rem; opacity:.9; }
+
+.footer-cta{
+  display:inline-flex; align-items:center; gap:.5rem;
+  margin-top: 1rem; padding:.55rem .9rem;
+  background: linear-gradient(180deg, var(--bordeaux-600), var(--bordeaux-800));
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+
+.footer-bottom{
+  border-top: 1px solid rgba(255,255,255,.12);
+  margin-top: 1.25rem;
+  padding: .9rem 1.25rem;
+  display:flex; gap:.6rem; justify-content:center; align-items:center;
+  color: var(--txt-dim);
+  font-size:.95rem;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .site-footer .footer-inner{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px){
+  .site-footer .footer-inner{ grid-template-columns: 1fr; }
+  .footer-bottom{ flex-wrap:wrap; text-align:center; }
+}
+/* 1) Le footer a son propre contexte d’empilement */
+.site-footer{
+  position: relative;
+  z-index: 1;
+}
+
+/* 2) La vague décorative ne doit jamais capter les clics */
+.footer-wave{
+  position: relative;
+  z-index: 0;
+}
+.footer-wave,
+.footer-wave *{
+  pointer-events: none !important;  /* liens dessous restent cliquables */
+}
+
+/* 3) Le contenu cliquable passe au-dessus de la vague */
+.site-footer .footer-inner,
+.site-footer .footer-bottom{
+  position: relative;
+  z-index: 2;
+}
+
+/* 4) Sécurise les liens au cas où un style global met pointer-events:none quelque part */
+.site-footer a{
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 3;
+}
+
+/* (Optionnel) Si tu as des pseudo-éléments décoratifs ailleurs */
+body::before, body::after,
+main::before, main::after{
+  pointer-events: none;
+}

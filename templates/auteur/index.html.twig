@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auteurs{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auteur-cards.css') }}">
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- Header -->
+<div class="page-header">
+  <h1 class="page-title">Nos Auteurs</h1>
+
+  {% if is_granted('ROLE_ADMIN') %}
+  <div class="actions">
+    <a class="btn btn-primary" href="{{ path('app_auteur_new') }}">
+      <i class="fa-solid fa-plus"></i> Nouvel auteur
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Cartes des auteurs -->
+<div class="auteurs-grid">
+  {% for auteur in auteurs %}
+    <div class="auteur-card">
+      <div class="auteur-icon">
+        <i class="fa-solid fa-user-pen"></i>
+      </div>
+
+      <h3>{{ auteur.nom }} {{ auteur.prenom }}</h3>
+
+      {% if is_granted('ROLE_ADMIN') %}
+        <div class="auteur-actions">
+          <a href="{{ path('app_auteur_show', {'id': auteur.id}) }}" title="Voir">
+            <i class="fa-regular fa-eye"></i>
+          </a>
+          <a href="{{ path('app_auteur_edit', {'id': auteur.id}) }}" title="Modifier">
+            <i class="fa-regular fa-pen-to-square"></i>
+          </a>
+        </div>
+      {% else %}
+        <a href="{{ path('app_auteur_show', {'id': auteur.id}) }}" class="auteur-btn">
+          Voir détails
+        </a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>Aucun auteur trouvé.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

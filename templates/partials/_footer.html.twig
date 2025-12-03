@@ -1,0 +1,52 @@
+<footer class="site-footer">
+  {# vague décorative en haut du footer (SVG) #}
+  <div class="footer-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" focusable="false">
+      <path d="M0,64 C240,96 480,0 720,24 C960,48 1200,96 1440,64 L1440,90 L0,90 Z"></path>
+    </svg>
+  </div>
+
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>À propos</h4>
+      <p>
+        Bibliothèque en ligne — un univers de lecture.
+      </p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+        <li><a href="{{ path('app_livre_index') }}">Livres</a></li>
+        <li><a href="{{ path('app_auteur_index') }}">Auteurs</a></li>
+        <li><a href="{{ path('app_categorie_index') }}">Catégories</a></li>
+        <li><a href="{{ path('app_editeur_index') }}">Éditeurs</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul class="footer-contact">
+        <li><i class="fa-solid fa-location-dot"></i> Sfax, Tunisie</li>
+        <li><i class="fa-solid fa-envelope"></i> contact@bibliotheque.tn</li>
+        <li><i class="fa-solid fa-phone"></i> +216 99 000 000</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; {{ "now"|date("Y") }} — Bibliothèque</span>
+    <span>•</span>
+    <a href="#">Mentions légales</a>
+    <span>•</span>
+    <a href="#">Politique de confidentialité</a>
+  </div>
+</footer>

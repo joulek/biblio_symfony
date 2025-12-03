@@ -1,0 +1,111 @@
+{# templates/livre/_form.html.twig #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+    {# Select2 CSS #}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{{ form_start(form, {
+    'attr': {
+        'novalidate': 'novalidate',
+        'enctype': 'multipart/form-data'
+    }
+}) }}
+
+<div class="form-grid">
+
+    <div class="field col-6">
+        {{ form_label(form.titre, 'Titre') }}
+        <div class="control">
+            {{ form_widget(form.titre, {'attr': {'placeholder':'Ex. Le Petit Prince'}}) }}
+        </div>
+    </div>
+
+    <div class="field col-6">
+        {{ form_label(form.qte, 'Quantité') }}
+        <div class="control">
+            {{ form_widget(form.qte) }}
+        </div>
+    </div>
+
+    <div class="field col-6">
+        {{ form_label(form.prixunitaire, 'Prix unitaire') }}
+        <div class="control">
+            {{ form_widget(form.prixunitaire) }}
+        </div>
+    </div>
+
+    <div class="field col-6">
+        {{ form_label(form.datepub, 'Date de publication') }}
+        <div class="control">
+            {{ form_widget(form.datepub) }}
+        </div>
+    </div>
+
+    <div class="field col-12">
+        {{ form_label(form.isbn, 'ISBN') }}
+        <div class="control">
+            {{ form_widget(form.isbn) }}
+        </div>
+    </div>
+
+    <!-- Upload image -->
+    <div class="field col-12">
+        {{ form_label(form.imageFile, 'Image du livre') }}
+        <div class="control">
+            {{ form_widget(form.imageFile) }}
+        </div>
+    </div>
+
+    <!-- CATÉGORIE -->
+    <div class="field col-6">
+        {{ form_label(form.categorie, 'Catégorie') }}
+        <div class="control">
+            {{ form_widget(form.categorie) }}
+        </div>
+    </div>
+
+    <!-- ÉDITEUR -->
+    <div class="field col-6">
+        {{ form_label(form.editeur, 'Éditeur') }}
+        <div class="control">
+            {{ form_widget(form.editeur) }}
+        </div>
+    </div>
+
+    <!-- AUTEURS -->
+<div class="field col-12">
+    {{ form_label(form.auteurs, 'Auteurs') }}
+    <div class="control">
+        {{ form_widget(form.auteurs) }}
+        <small class="form-error">
+            {{ form_errors(form.auteurs) }}
+        </small>
+    </div>
+</div>
+
+
+</div>
+
+<div class="form-actions">
+    <button class="btn btn-primary">
+        <i class="fa-solid fa-check"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
+{{ form_end(form) }}
+
+{# ─────────── JS Select2 ─────────── #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#{{ form.auteurs.vars.id }}').select2({
+            placeholder: "Sélectionner un ou plusieurs auteurs",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>

@@ -1,0 +1,152 @@
+/* ---- NAVBAR ---- */
+.navbar {
+  background: linear-gradient(135deg, #4c0f1a, #5e1223);
+  padding: 1.2em 0;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+
+/* 🔗 Liens normaux */
+.navbar a {
+  color: #d8bfb8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: .5px;
+  transition: all .3s ease;
+  position: relative;
+  display: inline-block;       /* ⚠ empêche de prendre toute la largeur */
+  padding: 6px 0;
+}
+
+/* Effet soulignement hover */
+.navbar a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #d8bfb8;
+  transition: width .3s ease;
+}
+
+.navbar a:hover {
+  color: #fff;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+/* 🎯 Boutons connexion/déconnexion */
+.navbar a.btn-login,
+.navbar a.btn-logout {
+  display: inline-flex !important;   /* !!! important: évite la largeur full */
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: .25s ease;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0,0,0,.15);
+}
+
+/* 🟢 Bouton Connexion */
+.navbar a.btn-login {
+  background: #fff;
+  color: var(--maroon);
+  border: 1px solid rgba(76,15,26,0.3);
+}
+
+.navbar a.btn-login:hover {
+  background: var(--maroon);
+  color: #fff;
+  box-shadow: 0 5px 12px rgba(76,15,26,.4);
+}
+
+/* 🔴 Bouton Déconnexion */
+.navbar a.btn-logout {
+  background: #a11b1b;
+  color: white;
+  border: 1px solid transparent;
+}
+
+.navbar a.btn-logout:hover {
+  filter: brightness(.9);
+  box-shadow: 0 5px 12px rgba(161,27,27,.4);
+}
+
+.navbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-btn {
+  background: transparent !important;
+  border: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+
+  color: #d8bfb8;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+}
+
+
+.user-btn i {
+  font-size: 1.1rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: white;
+  border-radius: 8px;
+  min-width: 180px;
+  padding: 10px 0;
+  display: none;
+  box-shadow: 0 6px 15px rgba(0,0,0,.2);
+  z-index: 999;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #4c0f1a;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(76,15,26,0.1);
+}
+
+.dropdown-menu a.logout {
+  color: #a11b1b !important;
+}
+
+/* Show menu */
+.user-dropdown.open .dropdown-menu {
+  display: block;
+}

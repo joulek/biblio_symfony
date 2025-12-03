@@ -1,0 +1,26 @@
+{# templates/categorie/_form.html.twig #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+
+  <div class="form-grid">
+    {# Désignation (catégorie) #}
+    <div class="field col-12">
+      {{ form_label(form.designation, 'Désignation') }}
+      <div class="control">
+        {{ form_widget(form.designation, {'attr': {'placeholder':'Ex. Roman, Informatique…'}}) }}
+        {{ form_errors(form.designation) ? '<div class="error">' ~ form_errors(form.designation) ~ '</div>' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn-primary">
+      <i class="fa-solid fa-check"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+  </div>
+
+{{ form_end(form) }}

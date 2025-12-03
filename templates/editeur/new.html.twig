@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Éditeur{% endblock %}
+
+{% block body %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+<link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+{% endblock %}
+
+
+
+<!-- Carte + Form -->
+<div class="page-center">
+  <div class="card">
+    <!-- Bande -->
+    <div class="card-hero">
+      <i class="fa-solid fa-building-circle-plus"></i>
+      <div>
+        <div style="font-weight:800; font-size:1.1rem; color:#FFF5F7;">Ajouter Éditeur</div>
+        <div style="opacity:.85;">Saisissez les informations de l’éditeur</div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      {{ include('editeur/_form.html.twig', { button_label: 'Enregistrer' }) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

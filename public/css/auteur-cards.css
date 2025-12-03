@@ -1,0 +1,117 @@
+/* === CARTES AUTEURS === */
+:root {
+  --maroon:#4C0F1A;
+  --maroon-2:#5E1223;
+  --maroon-3:#6A2136;
+  --soft:#FDF9F9;
+}
+
+/* Grille auteurs */
+.auteurs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Carte */
+.auteur-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 15px rgba(76,15,26,.15);
+  border: 1px solid rgba(76,15,26,.1);
+  text-align: center;
+  transition: .3s ease;
+}
+
+.auteur-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(76,15,26,.25);
+}
+
+/* Icône */
+.auteur-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--maroon);
+  background: rgba(76,15,26,0.1);
+  padding: 12px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+/* Nom */
+.auteur-card h3 {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: var(--maroon-2);
+}
+/* === Centrage du header sur la page auteurs === */
+.page-header-centered {
+  justify-content: center;           /* centre horizontalement */
+  flex-direction: column;            /* empile le titre + bouton */
+  text-align: center;
+  padding-top: 80px;                 /* espace en haut pour éviter le vide */
+}
+
+.page-header-centered .actions {
+  margin-top: 15px;                  /* petit espace sous le titre */
+}
+
+/* Bouton utilisateur */
+.auteur-btn {
+  display: inline-block;
+  padding: 8px 15px;
+  background: var(--maroon);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: .25s;
+}
+
+.auteur-btn:hover {
+  background: var(--maroon-3);
+  transform: translateY(-2px);
+}
+
+/* Actions admin */
+.auteur-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.auteur-actions a {
+  color: var(--maroon);
+  font-size: 1.2rem;
+  transition: color 0.25s;
+}
+
+.auteur-actions a:hover {
+  color: var(--maroon-3);
+}
+.page-title {
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-title .badge {
+  background: rgba(76,15,26,0.12);
+  color: var(--maroon);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}

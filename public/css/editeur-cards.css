@@ -1,0 +1,92 @@
+/* === CARTES ÉDITEURS === */
+:root {
+  --maroon:#4C0F1A;
+  --maroon-2:#5E1223;
+  --maroon-3:#6A2136;
+  --soft:#FDF9F9;
+}
+
+/* Grille */
+.editeurs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Carte */
+.editeur-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 15px rgba(76,15,26,.15);
+  border: 1px solid rgba(76,15,26,.1);
+  text-align: center;
+  transition: .3s ease;
+}
+
+.editeur-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(76,15,26,.25);
+}
+
+/* Icône */
+.editeur-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--maroon);
+  background: rgba(76,15,26,0.1);
+  padding: 12px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+/* Nom */
+.editeur-card h3 {
+  margin: 10px 0;
+  font-size: 1.15rem;
+  color: var(--maroon-2);
+}
+
+/* Bouton public */
+.editeur-btn {
+  display: inline-block;
+  padding: 8px 15px;
+  background: var(--maroon);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: .25s;
+  margin-top: 10px;
+}
+
+.editeur-btn:hover {
+  background: var(--maroon-3);
+  transform: translateY(-2px);
+}
+
+/* Actions admin */
+.editeur-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.editeur-actions a {
+  color: var(--maroon);
+  font-size: 1.2rem;
+  transition: 0.25s;
+}
+
+.editeur-actions a:hover {
+  color: var(--maroon-3);
+}

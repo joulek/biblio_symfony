@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé{% endblock %}
+
+{% block body %}
+<style>
+    .error-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        background: #f4f2ff;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .error-card {
+        background: white;
+        padding: 40px 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        max-width: 500px;
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .error-icon {
+        width: 120px;
+        opacity: 0.9;
+        margin-bottom: 25px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+        color: #6d28d9;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    p {
+        color: #4b5563;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    .btn-home {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #6d28d9;
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+        font-weight: 600;
+    }
+
+    .btn-home:hover {
+        background: #5b21b6;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="error-wrapper">
+    <div class="error-card">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/755/755039.png"
+             alt="Unauthorized"
+             class="error-icon">
+
+        <h1>403 — Accès refusé</h1>
+
+        <p>
+            Désolé, vous n’avez pas la permission d’accéder à cette page.<br>
+            Si vous pensez que c’est une erreur, contactez un administrateur.
+        </p>
+
+        <a href="{{ path('app_home') }}" class="btn-home">
+            ⬅ Retour à l’accueil
+        </a>
+    </div>
+</div>
+{% endblock %}

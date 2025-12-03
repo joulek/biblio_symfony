@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Livre{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+
+<div class="card">
+    <!-- Bande bordeaux -->
+    <div class="card-hero">
+        <i class="fa-regular fa-pen-to-square"></i>
+        <div>
+            <div class="hero-title">Modifier Livre</div>
+            <div class="hero-subtitle">Mettez à jour les informations du livre</div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        {{ include('livre/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+        <div class="actions">
+            <span class="inline-form">
+                {{ include('livre/_delete_form.html.twig', {
+                    button_class: 'btn btn-danger',
+                    button_icon: 'fa-solid fa-trash',
+                    button_label: 'Supprimer'
+                }) }}
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}

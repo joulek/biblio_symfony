@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Catégorie{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
+      <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+{% endblock %}
+
+
+
+<!-- Carte centrée -->
+<div class="page-center">
+  <div class="card">
+    <!-- Bande -->
+    <div class="card-hero">
+      <i class="fa-regular fa-pen-to-square"></i>
+      <div>
+        <div style="font-weight:800; font-size:1.1rem; color:#FFF5F7;">Modifier Catégorie</div>
+        <div style="opacity:.85;">Mettez à jour la désignation de la catégorie</div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      {{ include('categorie/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+      <div class="actions">
+        <span class="inline-form">
+          {{ include('categorie/_delete_form.html.twig') }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

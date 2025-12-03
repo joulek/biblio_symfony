@@ -1,0 +1,101 @@
+/* Container global */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: #f8f4f4;
+}
+
+/* Card du formulaire */
+.login-form {
+    background: #ffffff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+/* Titre */
+.login-form h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+    color: #5a1220; /* ton bordeaux */
+    font-weight: 600;
+}
+
+/* Champs */
+.form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #8d2233;
+    outline: none;
+    box-shadow: 0 0 4px rgba(141, 34, 51, 0.4);
+}
+
+/* Bouton */
+.btn-login {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #8d2233; /* bordeaux */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #6b1525;
+}
+
+/* Message d'erreur */
+.alert {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+
+.no-account {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.no-account a {
+    color: var(--maroon);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.no-account a:hover {
+    color: var(--maroon-3);
+    text-decoration: underline;
+}
