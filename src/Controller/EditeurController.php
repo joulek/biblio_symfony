@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[Route('/editeur')]
 final class EditeurController extends AbstractController
@@ -21,7 +23,7 @@ final class EditeurController extends AbstractController
             'editeurs' => $editeurRepository->findAll(),
         ]);
     }
-    
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_editeur_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

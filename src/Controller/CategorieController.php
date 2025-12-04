@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[Route('/categorie')]
 final class CategorieController extends AbstractController
@@ -21,7 +23,7 @@ final class CategorieController extends AbstractController
             'categories' => $categorieRepository->findAll(),
         ]);
     }
-  
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_categorie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
