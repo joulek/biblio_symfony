@@ -43,6 +43,11 @@
                 <span class="quantity-number">{{ item.quantite }}</span>
 
                 <a href="{{ path('panier_increment', { id: item.id }) }}" class="quantity-btn plus">+</a>
+                <a href="{{ path('panier_remove_item', { id: item.id }) }}"
+   class="delete-btn">
+    🗑 
+</a>
+
               </div>
 
 

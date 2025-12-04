@@ -53,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $numTel = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $resetCode = null;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -218,6 +221,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNumTel(?string $numTel): static
     {
         $this->numTel = $numTel;
+
+        return $this;
+    }
+
+    public function getResetCode(): ?int
+    {
+        return $this->resetCode;
+    }
+
+    public function setResetCode(?int $resetCode): static
+    {
+        $this->resetCode = $resetCode;
 
         return $this;
     }

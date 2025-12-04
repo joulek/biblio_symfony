@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="login-container">
+    <h2>Vérification du code</h2>
+
+    <form method="post">
+        <input type="hidden" name="email" value="{{ email }}">
+
+        <label>Code reçu :</label>
+        <input type="text" name="code" required>
+
+        <button class="btn-login">Vérifier</button>
+    </form>
+</div>
+{% endblock %}

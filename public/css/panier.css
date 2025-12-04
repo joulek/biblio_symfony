@@ -118,3 +118,18 @@
 .btn-commander:hover {
     background: #6A2136;
 }
+.delete-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: #b90000;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.25s;
+}
+
+.delete-btn:hover {
+  background: #ff0000;
+}

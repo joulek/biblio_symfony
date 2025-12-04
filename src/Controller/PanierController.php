@@ -134,5 +134,24 @@ private function updatePanierTotal(Panier $panier)
     }
     $panier->setTotal($total);
 }
+#[Route('/panier/remove/{id}', name: 'panier_remove_item')]
+public function removeItem(PanierItem $item, EntityManagerInterface $em): Response
+{
+    $panier = $item->getPanier();
+
+    // supprimer l'item du panier
+    $em->remove($item);
+
+    // recalcul total
+    $total = 0;
+    foreach ($panier->getPanierItems() as $i) {
+        $total += $i->getLivre()->getPrixunitaire() * $i->getQuantite();
+    }
+    $panier->setTotal($total);
+
+    $em->flush();
+
+    return $this->redirectToRoute('app_panier');
+}
 
 }

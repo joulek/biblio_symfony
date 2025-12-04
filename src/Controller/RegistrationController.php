@@ -30,14 +30,22 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
+            // -----------------------------
+            // 🔥 RÉCUPÉRATION DES CHAMPS AJOUTÉS
+            // -----------------------------
+            $user->setNom($form->get('nom')->getData());
+            $user->setPrenom($form->get('prenom')->getData());
+            $user->setNumTel($form->get('numTel')->getData());
+
             // encode le mot de passe
             $user->setPassword(
                 $userPasswordHasher->hashPassword($user, $plainPassword)
             );
 
-            // 🔹 AJOUT DU RÔLE PAR DÉFAUT DANS LA BDD
+            // rôle par défaut
             $user->setRoles(['ROLE_USER']);
 
+            // sauvegarde en bdd
             $entityManager->persist($user);
             $entityManager->flush();
 
