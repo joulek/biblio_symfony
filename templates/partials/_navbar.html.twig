@@ -61,12 +61,12 @@
 const userDropdown = document.querySelector('.user-dropdown');
 if (userDropdown) {
   const userBtn = userDropdown.querySelector('.user-btn');
-  
+
   userBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     userDropdown.classList.toggle('open');
   });
-  
+
   // Fermer le menu en cliquant à l'extérieur
   document.addEventListener('click', (e) => {
     if (!userDropdown.contains(e.target)) {

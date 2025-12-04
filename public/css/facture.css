@@ -1,0 +1,26 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: #4c0f1a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #aaa;
+    padding: 10px;
+    text-align: left;
+}
+
+.total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+}

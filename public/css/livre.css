@@ -257,3 +257,108 @@ tbody tr:hover a {
     margin-top: 3px;
     display: block;
 }
+
+
+.book-page {
+  color: #4C0F1A;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Image */
+.book-cover-wrapper {
+  background: #fff;
+  padding: 18px;
+  border-radius: 18px;
+  width: 100%;
+  text-align: center;
+}
+
+.book-cover-img {
+  border-radius: 12px;
+  max-height: 520px;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Titre */
+.book-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #4C0F1A;
+  letter-spacing: .5px;
+}
+
+/* Cards */
+.info-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 20px rgba(76,15,26,.08);
+  transition: transform .2s;
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+}
+
+.info-card.highlight {
+  border-left: 4px solid #4C0F1A;
+}
+
+.price-card {
+  border-left: 4px solid #B8860B;
+}
+
+.price {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.label {
+  font-weight: 700;
+  color: #5E1223;
+}
+
+.value {
+  color: #333;
+}
+
+/* Résumé */
+.resume-card {
+  margin-top: 25px;
+  padding: 22px;
+  background: #fff;
+  border-radius: 14px;
+}
+
+.available-dot {
+  width: 12px;
+  height: 12px;
+  background: #28a745;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Boutons */
+.btn-back {
+  padding: 10px 22px;
+  border-radius: 25px;
+  background: #4C0F1A;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-back:hover {
+  background: #5E1223;
+  transform: translateY(-2px);
+}
+
+/* Soft shadow */
+.shadow-soft {
+  box-shadow: 0 12px 30px rgba(76,15,26,.1);
+}
+/* Ajouter de l’espace entre les cards */
+.info-card {
+  margin-bottom: 18px; /* AUGMENTER ICI si tu veux plus d’espace */
+}

@@ -45,7 +45,7 @@ class ContactController extends AbstractController
                 // Envoi DIRECT sans queue
                 $mailer->send($email);
 
-                $this->addFlash('success', 'Votre message a été envoyé avec succès !');
+                $this->addFlash('success-contact', 'Votre message a été envoyé avec succès !');
 
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Erreur lors de l\'envoi: ' . $e->getMessage());

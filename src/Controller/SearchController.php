@@ -45,7 +45,6 @@ class SearchController extends AbstractController
                 ->orWhere('l.description LIKE :q')
                 ->setParameter('q', '%' . $query . '%');
 
-            // TRI compatible PostgreSQL
             switch ($sort) {
                 case 'title_asc':
                     $livresQuery->orderBy('l.titre', 'ASC');
@@ -54,13 +53,12 @@ class SearchController extends AbstractController
                     $livresQuery->orderBy('l.titre', 'DESC');
                     break;
                 case 'date_asc':
-                    $livresQuery->orderBy('l.datePublication', 'ASC');
+                    $livresQuery->orderBy('l.datepub', 'ASC'); // ⚠ BON NOM DU CHAMP
                     break;
                 case 'date_desc':
-                    $livresQuery->orderBy('l.datePublication', 'DESC');
+                    $livresQuery->orderBy('l.datepub', 'DESC');
                     break;
                 default:
-                    // Tri par pertinence simplifié compatible PostgreSQL
                     $livresQuery->orderBy('l.titre', 'ASC');
                     break;
             }
@@ -69,7 +67,11 @@ class SearchController extends AbstractController
                 $livresQuery->getQuery(),
                 $page,
                 $limit,
-                ['pageParameterName' => 'livres_page']
+                [
+                    'pageParameterName' => 'livres_page',
+                    'sortFieldParameterName' => null,
+                    'sortDirectionParameterName' => null,
+                ]
             );
         }
 
@@ -87,33 +89,41 @@ class SearchController extends AbstractController
                 $auteursQuery->getQuery(),
                 $page,
                 $limit,
-                ['pageParameterName' => 'auteurs_page']
+                [
+                    'pageParameterName' => 'auteurs_page',
+                    'sortFieldParameterName' => null,
+                    'sortDirectionParameterName' => null,
+                ]
             );
         }
 
         /* ========================================
            CATÉGORIES
         ======================================== */
-        /* ---------------- CATÉGORIES ---------------- */
-if ($type === 'all' || $type === 'categories') {
+        if ($type === 'all' || $type === 'categories') {
 
-    $categoriesQuery = $categorieRepository->createQueryBuilder('c')
-        ->where('c.designation LIKE :q')
-        ->setParameter('q', '%' . $query . '%')
-        ->orderBy('c.designation', 'ASC');
+            $categoriesQuery = $categorieRepository->createQueryBuilder('c')
+                ->where('c.designation LIKE :q')
+                ->setParameter('q', '%' . $query . '%')
+                ->orderBy('c.designation', 'ASC');
 
-    $results['categories'] = $paginator->paginate(
-        $categoriesQuery->getQuery(),
-        $page,
-        $limit,
-        ['pageParameterName' => 'categories_page']
-    );
-}
+            $results['categories'] = $paginator->paginate(
+                $categoriesQuery->getQuery(),
+                $page,
+                $limit,
+                [
+                    'pageParameterName' => 'categories_page',
+                    'sortFieldParameterName' => null,
+                    'sortDirectionParameterName' => null,
+                ]
+            );
+        }
 
         /* ========================================
            ÉDITEURS
         ======================================== */
         if ($type === 'all' || $type === 'editeurs') {
+
             $editeursQuery = $editeurRepository->createQueryBuilder('e')
                 ->where('e.nom LIKE :q')
                 ->setParameter('q', '%' . $query . '%')
@@ -123,7 +133,11 @@ if ($type === 'all' || $type === 'categories') {
                 $editeursQuery->getQuery(),
                 $page,
                 $limit,
-                ['pageParameterName' => 'editeurs_page']
+                [
+                    'pageParameterName' => 'editeurs_page',
+                    'sortFieldParameterName' => null,
+                    'sortDirectionParameterName' => null,
+                ]
             );
         }
 

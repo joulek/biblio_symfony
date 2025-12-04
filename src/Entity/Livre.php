@@ -128,4 +128,10 @@ class Livre
 
     public function getCategorie(): ?Categorie { return $this->categorie; }
     public function setCategorie(?Categorie $categorie): static { $this->categorie = $categorie; return $this; }
+
+
+
+
+
+
 }
