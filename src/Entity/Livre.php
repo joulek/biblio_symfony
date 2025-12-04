@@ -59,6 +59,16 @@ class Livre
     }
 
 
+public function getStock(): int
+{
+    return $this->qte;
+}
+
+public function setStock(int $stock): static
+{
+    $this->qte = $stock;
+    return $this;
+}
 
     public function getImage(): ?string
     {

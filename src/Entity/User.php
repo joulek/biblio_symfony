@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: "users")] // IMPORTANT : évite le mot réservé SQL "user"
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -23,25 +24,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Panier $panier = null;
 
-    /**
-     * @var Collection<int, Commande>
-     */
-    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $commandes;
 
     #[ORM\Column(length: 50, nullable: true)]
@@ -53,12 +45,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $numTel = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $resetCode = null;
+    /**
+     * @var Collection<int, Emprunt>
+     */
+    #[ORM\OneToMany(targetEntity: Emprunt::class, mappedBy: 'relation')]
+    private Collection $emprunts;
 
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,45 +70,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -121,26 +99,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
     public function __serialize(): array
     {
         $data = (array) $this;
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
         return $data;
     }
 
-    #[\Deprecated]
-    public function eraseCredentials(): void
-    {
-        // @deprecated, to be removed when upgrading to Symfony 8
-    }
+    public function eraseCredentials(): void {}
 
     public function getPanier(): ?Panier
     {
@@ -149,19 +118,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPanier(Panier $panier): static
     {
-        // set the owning side of the relation if necessary
         if ($panier->getUser() !== $this) {
             $panier->setUser($this);
         }
-
         $this->panier = $panier;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
     public function getCommandes(): Collection
     {
         return $this->commandes;
@@ -173,19 +136,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->commandes->add($commande);
             $commande->setUser($this);
         }
-
         return $this;
     }
 
     public function removeCommande(Commande $commande): static
     {
         if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
             if ($commande->getUser() === $this) {
                 $commande->setUser(null);
             }
         }
-
         return $this;
     }
 
@@ -197,7 +157,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(?string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -209,7 +168,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(?string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -221,18 +179,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNumTel(?string $numTel): static
     {
         $this->numTel = $numTel;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
+    {
+        return $this->emprunts;
+    }
+
+    public function addEmprunt(Emprunt $emprunt): static
+    {
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setRelation($this);
+        }
 
         return $this;
     }
 
-    public function getResetCode(): ?int
+    public function removeEmprunt(Emprunt $emprunt): static
     {
-        return $this->resetCode;
-    }
-
-    public function setResetCode(?int $resetCode): static
-    {
-        $this->resetCode = $resetCode;
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getRelation() === $this) {
+                $emprunt->setRelation(null);
+            }
+        }
 
         return $this;
     }

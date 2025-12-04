@@ -60,6 +60,13 @@
               <i class="fa-solid fa-cart-plus"></i> Ajouter
             </button>
           </form>
+        {% if is_granted('ROLE_USER') %}
+    <a href="{{ path('livre_emprunter', { id: livre.id }) }}" class="btn-action btn-emprunt">
+        <i class="fa-solid fa-hand-holding"></i> Emprunter
+    </a>
+{% endif %}
+
+
 
         </div>
 
