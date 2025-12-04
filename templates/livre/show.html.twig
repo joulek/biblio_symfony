@@ -1,92 +1,594 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail du Livre{% endblock %}
+{% block title %}Détail du Livre - {{ livre.titre }}{% endblock %}
 
-{% block body %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 {% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="{{ asset('css/livre.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff6b6b;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --text-color: #2d3436;
+            --text-muted: #6c757d;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--text-color);
+        }
+        
+        .book-detail {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .book-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            z-index: -1;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+        }
+        
+        .book-detail:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .book-cover {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 550px;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px dashed rgba(106, 17, 203, 0.1);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 60%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .book-cover img {
+            max-height: 450px;
+            width: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 5px;
+            position: relative;
+            z-index: 2;
+            transform: rotateY(-5deg) rotateX(5deg);
+            transform-style: preserve-3d;
+        }
+        
+        .book-cover:hover img {
+            transform: rotateY(0) rotateX(0) scale(1.05);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .book-cover .book-spine {
+            position: absolute;
+            left: 0;
+            top: 5%;
+            bottom: 5%;
+            width: 30px;
+            background: linear-gradient(135deg, #4a148c 0%, #1a237e 100%);
+            transform: translateX(-15px) rotateY(90deg);
+            transform-origin: right center;
+            box-shadow: inset -5px 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px 0 0 5px;
+            z-index: 1;
+        }
+        
+        .book-info {
+            padding: 3.5rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .book-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+            border-radius: 20px 0 0 0;
+            margin: -30px -30px 0 -30px;
+        }
+        
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 1.5rem 0;
+            position: relative;
+            padding-bottom: 1.2rem;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .book-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .book-meta {
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .book-meta::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
+        .book-meta p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            position: relative;
+            padding-left: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .book-meta p:hover {
+            transform: translateX(5px);
+            color: var(--text-color);
+        }
+        
+        .book-meta i {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 0.9rem;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.2);
+        }
+        
+        .book-description {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(106, 17, 203, 0.1);
+        }
+        
+        .book-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        }
+        
+        .book-description h5 {
+            color: var(--dark-color);
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .book-description h5::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 3px;
+        }
+        
+        .book-description p {
+            color: var(--text-color);
+            line-height: 1.8;
+            margin-bottom: 0;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .action-buttons {
+            margin-top: 3.5rem;
+            padding-top: 2rem;
+            position: relative;
+        }
+        
+        .action-buttons::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+        
+        .btn-custom {
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .btn-custom:hover::before {
+            width: 100%;
+        }
+        
+        .btn-custom i {
+            margin-right: 10px;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-custom:hover i {
+            transform: translateX(3px);
+        }
+        
+        .btn-outline-secondary {
+            border: 2px solid var(--text-muted);
+            color: var(--text-muted);
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-outline-secondary:hover {
+            background: var(--text-muted);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+            border-radius: 50px;
+        }
+        
+        .btn-primary:hover::after {
+            opacity: 1;
+        }
+        
+        .badge-available {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+            padding: 0.4em 1em;
+            border-radius: 50px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 176, 155, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .badge-available::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 30%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        .price-tag {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+            padding-left: 0.5rem;
+        }
+        
+        .price-tag::before {
+            content: '€';
+            position: absolute;
+            top: 0;
+            right: -0.8em;
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+        
+        .price-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            border-radius: 2px;
+        }
+    </style>
 {% endblock %}
 
-<div class="card">
-
-    <div class="card-hero">
-        <i class="fa-solid fa-book-open-cover"></i>
-        <div>
-            <div class="hero-title">{{ livre.titre }}</div>
-            <div class="hero-subtitle">ISBN : {{ livre.isbn ?: '—' }}</div>
-        </div>
-    </div>
-
-    <div class="card-body">
-        <div class="form-grid">
-            <!-- Titre -->
-            <div class="field col-6">
-                <label>Titre</label>
-                <input type="text" value="{{ livre.titre }}" readonly>
+{% block body %}
+<div class="container py-5">
+    <div class="book-detail">
+        <!-- Éléments décoratifs -->
+        <div class="position-absolute" style="top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(106, 17, 203, 0.1) 0%, rgba(255, 255, 255, 0) 70%);"></div>
+        <div class="position-absolute" style="bottom: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(37, 117, 252, 0.1) 0%, rgba(255, 255, 255, 0) 70%);"></div>
+        
+        <div class="row g-0">
+            <!-- Couverture du livre -->
+            <div class="col-lg-5">
+                <div class="book-cover">
+                    <div class="book-spine"></div>
+                    {% if livre.image %}
+                        <img src="{{ asset('uploads/livres/' ~ livre.image) }}" 
+                             class="img-fluid" 
+                             alt="Couverture de {{ livre.titre }}"
+                             title="{{ livre.titre }}"
+                             data-tilt
+                             data-tilt-max="10"
+                             data-tilt-speed="400"
+                             data-tilt-perspective="1000">
+                    {% else %}
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-book-open fa-5x mb-3" style="color: var(--primary-color);"></i>
+                            <span class="text-muted">Aucune image disponible</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-
-            <!-- Quantité -->
-            <div class="field col-6">
-                <label>Quantité</label>
-                <input type="text" value="{{ livre.qte }}" readonly>
+            
+            <!-- Informations du livre -->
+            <div class="col-lg-7">
+                <div class="book-info">
+                    <!-- Titre -->
+                    <h1 class="book-title">{{ livre.titre }}</h1>
+                    
+                    <!-- Auteur(s) -->
+                    {% if livre.auteurs is not empty %}
+                        <div class="book-meta">
+                            <p>
+                                <i class="fas fa-user-edit"></i>
+                                <strong>Auteur(s) :</strong> 
+                                {% for auteur in livre.auteurs %}
+                                    <span class="text-primary">{{ auteur.getPrenom() }} {{ auteur.getNom() }}</span>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <!-- Éditeur -->
+                            {% if livre.editeur %}
+                                <p class="mb-3">
+                                    <i class="fas fa-building"></i>
+                                    <strong>Éditeur :</strong> 
+                                    <span class="text-muted">{{ livre.editeur.getNom() }}</span>
+                                </p>
+                            {% endif %}
+                            
+                            <!-- ISBN -->
+                            <p class="mb-3">
+                                <i class="fas fa-barcode"></i>
+                                <strong>ISBN :</strong> 
+                                <span class="text-muted">{{ livre.isbn ?: 'Non renseigné' }}</span>
+                            </p>
+                            
+                            <!-- Date de publication -->
+                            <p class="mb-3">
+                                <i class="far fa-calendar-alt"></i>
+                                <strong>Publié le :</strong> 
+                                <span class="text-muted">{{ livre.datepub ? livre.datepub|date('d/m/Y') : 'Non renseignée' }}</span>
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <!-- Quantité disponible -->
+                            <div class="mb-4 p-3 bg-light rounded-3" style="border-left: 4px solid var(--primary-color);">
+                                <p class="mb-2">
+                                    <i class="fas fa-boxes"></i>
+                                    <strong>Disponibilité :</strong> 
+                                </p>
+                                {% if livre.qte > 0 %}
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="spinner-grow text-success" style="width: 10px; height: 10px;" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        <span class="badge-available">{{ livre.qte }} exemplaire(s) disponible(s)</span>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="spinner-grow text-secondary" style="width: 10px; height: 10px;" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        <span class="badge bg-secondary">Rupture de stock</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Prix -->
+                            {% if livre.prixunitaire %}
+                                <div class="p-3 bg-light rounded-3" style="border-left: 4px solid var(--accent-color);">
+                                    <p class="mb-2">
+                                        <i class="fas fa-tag"></i>
+                                        <strong>Prix :</strong> 
+                                    </p>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <i class="fas fa-coins" style="color: var(--accent-color); font-size: 1.2rem;"></i>
+                                        </div>
+                                        <span class="price-tag">{{ livre.prixunitaire|number_format(2, ',', ' ') }}</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    {% if livre.description %}
+                        <div class="book-description">
+                            <h5><i class="fas fa-align-left me-2"></i>Résumé</h5>
+                            <p>{{ livre.description|nl2br }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Boutons d'action -->
+                    <div class="action-buttons">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_livre_index') }}" class="btn btn-outline-secondary btn-custom">
+                                <i class="fas fa-arrow-left"></i> Retour à la liste
+                            </a>
+                            
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="d-flex">
+                                    <a href="{{ path('app_livre_edit', {'id': livre.id}) }}" class="btn btn-primary btn-custom me-2">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </a>
+                                    {{ include('livre/_delete_form.html.twig') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <!-- Prix -->
-            <div class="field col-6">
-                <label>Prix unitaire</label>
-                <input type="text" value="{{ livre.prixunitaire }}" readonly>
-            </div>
-
-            <!-- Date -->
-            <div class="field col-6">
-                <label>Date de publication</label>
-                <input type="text" value="{{ livre.datepub ? livre.datepub|date('Y-m-d') : '—' }}" readonly>
-            </div>
-
-            <!-- ISBN -->
-            <div class="field col-12">
-                <label>ISBN</label>
-                <input type="text" value="{{ livre.isbn ?: '—' }}" readonly>
-            </div>
-
-            <!-- Catégorie -->
-            <div class="field col-6">
-                <label>Catégorie</label>
-                <input type="text" value="{{ livre.categorie ? livre.categorie.designation : '—' }}" readonly>
-            </div>
-
-            <!-- Éditeur -->
-            <div class="field col-6">
-                <label>Éditeur</label>
-                <input type="text" value="{{ livre.editeur ? livre.editeur.nom : '—' }}" readonly>
-            </div>
-
-            <!-- Auteurs -->
-            <div class="field col-12">
-                <label>Auteur(s)</label>
-                <input type="text" value="{% if livre.auteurs|length > 0 %}
-                    {{ livre.auteurs|map(a => a.nom ~ ' ' ~ a.prenom)|join(', ') }}
-                {% else %}
-                    —
-                {% endif %}" readonly>
-            </div>
-        </div>
-{% if is_granted('ROLE_ADMIN') %}
-        <div class="actions">
-            <a class="btn btn-primary" href="{{ path('app_livre_edit', {'id': livre.id}) }}">
-                <i class="fa-regular fa-pen-to-square"></i> Modifier
-            </a>
-            <span class="inline-form">
-                {{ include('livre/_delete_form.html.twig', {
-                    button_class: 'btn btn-danger',
-                    button_icon: 'fa-solid fa-trash',
-                    button_label: 'Supprimer'
-                }) }}
-            </span>
         </div>
     </div>
 </div>
-{% endif %}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </p>
 {% endblock %}
+

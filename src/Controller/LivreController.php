@@ -4,15 +4,17 @@ namespace App\Controller;
 
 
 
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Livre;
 use App\Form\LivreType;
+use App\Entity\Emprunt;
 use App\Repository\LivreRepository;
+use App\Repository\EmpruntRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/livre')]
 final class LivreController extends AbstractController
@@ -70,7 +72,7 @@ final class LivreController extends AbstractController
     public function show(Livre $livre): Response
     {
         return $this->render('livre/show.html.twig', [
-            'livre' => $livre,
+            'livre' => $livre
         ]);
     }
 

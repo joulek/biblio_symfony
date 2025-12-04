@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Emprunt;
+use App\Entity\Livre;   // ✅ IMPORTANT : ajout du bon namespace
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,22 @@ class EmpruntRepository extends ServiceEntityRepository
         parent::__construct($registry, Emprunt::class);
     }
 
-    //    /**
-    //     * @return Emprunt[] Returns an array of Emprunt objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Trouve les emprunts qui arrivent à échéance dans les 2 jours et n'ont pas encore été notifiés
+     *
+     * @param \DateTime $dateLimite Date limite pour le retour
+     * @return Emprunt[]
+     */
+    public function findEmpruntsARappeler(\DateTime $dateLimite): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.dateRetourPrevue <= :dateLimite')
+            ->andWhere('e.statut = :statut')
+            ->andWhere('e.dateNotificationRappel IS NULL')
+            ->setParameter('dateLimite', $dateLimite)
+            ->setParameter('statut', 'en_cours')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Emprunt
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

@@ -1,40 +1,77 @@
-<script src="{{ asset('js/navbar.js') }}"></script>
-
 <nav class="navbar">
   <a href="{{ path('app_accueil') }}">Accueil</a>
   <a href="{{ path('app_categorie_index') }}">Catégories</a>
   <a href="{{ path('app_livre_index') }}">Livres</a>
-  <a href="{{ path('app_editeur_index') }}">Éditeurs</a>
-  <a href="{{ path('app_auteur_index') }}">Auteurs</a>
-  <a href="{{ path('app_contact') }}">Contact</a>
-  <a href="{{ path('app_about') }}">À propos</a>
 
   {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('admin') }}" class="btn-admin">Dashboard</a>
+    <a href="{{ path('app_editeur_index') }}">Éditeurs</a>
+    <a href="{{ path('app_auteur_index') }}">Auteurs</a>
   {% endif %}
 
+  <a href="{{ path('app_contact') }}">Contact</a>
+  <a href="{{ path('app_about') }}">À propos</a>
+    <!-- 🔍 BARRE DE RECHERCHE GLOBALE -->
+    <form action="{{ path('app_search') }}" method="get" class="search-form">
+        <input type="text" name="q" placeholder="Rechercher un livre..." required>
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+
   {% if app.user %}
-    <div class="navbar-right">
-      <div class="user-dropdown">
-        <button type="button" class="user-btn">
-          <i class="fa-solid fa-user"></i>
+    <div class="user-dropdown">
+      <button class="user-btn">
+        <i class="fas fa-user-circle"></i>
+        {{ app.user.prenom ?? app.user.nom }}
+        <i class="fas fa-chevron-down"></i>
+      </button>
 
-          {{ app.user.prenom ?? '' }} {{ app.user.nom ?? '' }}
+      <div class="dropdown-menu">
+        <a href="{{ path('app_panier') }}">
+          <i class="fas fa-shopping-cart"></i> Panier
 
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
+          {% if app.session.get('panier') is not empty %}
+            <span class="badge">{{ app.session.get('panier')|length }}</span>
+          {% endif %}
+        </a>
 
-        <div class="dropdown-menu">
-          <a href="{{ path('app_panier') }}">Mon Panier</a>
-          <a href="{{ path('app_commandes') }}">Mes Commandes</a>
-            <a href="{{ path('my_emprunts') }}">Mes Empruntes</a>
-          <a href="{{ path('app_profile') }}">Mon Profil</a>
+        <a href="{{ path('app_commandes') }}">
+          <i class="fas fa-box"></i> Mes commandes
+        </a>
 
-          <a href="{{ path('app_logout') }}" class="logout">Déconnexion</a>
-        </div>
+        <a href="{{ path('my_emprunts') }}">
+          <i class="fas fa-book"></i> Mes emprunts
+        </a>
+
+        <a href="{{ path('app_profile') }}">
+          <i class="fas fa-user-cog"></i> Mon profil
+        </a>
+
+        <a href="{{ path('app_logout') }}" class="logout">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
       </div>
     </div>
   {% else %}
-    <a href="{{ path('app_login') }}" class="btn-login-navbar">Connexion</a>
+    <a href="{{ path('app_login') }}" class="btn-login">Connexion</a>
   {% endif %}
 </nav>
+
+
+<script>
+// Gestion du menu déroulant sur mobile
+const userDropdown = document.querySelector('.user-dropdown');
+if (userDropdown) {
+  const userBtn = userDropdown.querySelector('.user-btn');
+  
+  userBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userDropdown.classList.toggle('open');
+  });
+  
+  // Fermer le menu en cliquant à l'extérieur
+  document.addEventListener('click', (e) => {
+    if (!userDropdown.contains(e.target)) {
+      userDropdown.classList.remove('open');
+    }
+  });
+}
+</script>

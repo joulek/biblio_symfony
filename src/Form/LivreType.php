@@ -19,6 +19,11 @@ class LivreType extends AbstractType
     {
         $builder
             ->add('titre')
+            ->add('description', null, [
+                'label' => 'Description',
+                'attr' => ['rows' => 5],
+                'required' => false
+            ])
             ->add('qte')
             ->add('prixunitaire')
             ->add('datepub')

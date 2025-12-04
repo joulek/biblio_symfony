@@ -24,6 +24,9 @@ class Emprunt
 
     #[ORM\Column(length: 50)]
     private ?string $statut = null;
+    
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $dateNotificationRappel = null;
 
     // 🔥 Relation correcte vers User
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
@@ -82,6 +85,17 @@ class Emprunt
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
+        return $this;
+    }
+    
+    public function getDateNotificationRappel(): ?\DateTime
+    {
+        return $this->dateNotificationRappel;
+    }
+    
+    public function setDateNotificationRappel(?\DateTime $dateNotificationRappel): self
+    {
+        $this->dateNotificationRappel = $dateNotificationRappel;
         return $this;
     }
 

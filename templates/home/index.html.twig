@@ -1,0 +1,529 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Librairie en ligne - Votre bibliothèque numérique{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+:root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b4e90;
+            --accent-color: #ff6b6b;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --text-color: #2d3436;
+            --text-muted: #6c757d;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        /* Section Héro */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.9) 0%, rgba(107, 78, 144, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 8rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        /* Section des livres en vedette */
+        .featured-books {
+            padding: 5rem 0;
+            background-color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+        
+        .book-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-cover {
+            height: 300px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-cover img {
+            max-height: 100%;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .book-card:hover .book-cover img {
+            transform: scale(1.05);
+        }
+        
+        .book-details {
+            padding: 1.5rem;
+        }
+        
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .book-author {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        
+        /* Catégories */
+        .categories-section {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            position: relative;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover::before {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .category-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-count {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Témoignages */
+        .testimonials-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 1rem;
+            position: relative;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .testimonial-text::before {
+            content: '\201C';
+            font-size: 4rem;
+            position: absolute;
+            left: -1rem;
+            top: -1rem;
+            color: rgba(74, 111, 165, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .author-info h5 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .author-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Boutons */
+        .btn-custom {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-outline-light {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline-light:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Section Héro -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Bienvenue dans votre bibliothèque en ligne</h1>
+                        <p class="hero-subtitle">Découvrez notre vaste collection de livres, des classiques intemporels aux dernières nouveautés. Empruntez, lisez, explorez.</p>
+                        <div class="d-flex gap-3">
+                            <a href="{{ path('app_livre_index') }}" class="btn btn-light btn-lg">
+                                <i class="fas fa-book-open me-2"></i>Explorer la bibliothèque
+                            </a>
+                            <a href="#featured" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-star me-2"></i>Découvrir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Livres en vedette -->
+    <section id="featured" class="featured-books">
+        <div class="container">
+            <h2 class="section-title">Livres en vedette</h2>
+            <div class="row">
+                {% for livre in livres|slice(0, 4) %}
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="book-card">
+                            <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="text-decoration-none text-dark">
+                                <div class="book-cover">
+                                    {% if livre.image %}
+                                        <img src="{{ asset('uploads/livres/' ~ livre.image) }}" alt="{{ livre.titre }}" class="img-fluid">
+                                    {% else %}
+                                        <i class="fas fa-book-open fa-4x text-muted"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="book-details">
+                                    <h3 class="book-title">{{ livre.titre|length > 30 ? livre.titre|slice(0, 30) ~ '...' : livre.titre }}</h3>
+                                    <p class="book-author">
+                                        {% if livre.auteurs|length > 0 %}
+                                            {{ livre.auteurs[0].prenom }} {{ livre.auteurs[0].nom }}
+                                        {% else %}
+                                            Auteur inconnu
+                                        {% endif %}
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="book-price">{{ livre.prixunitaire ? livre.prixunitaire|number_format(2, ',', ' ') ~ ' €' : 'Gratuit' }}</span>
+                                        {% if livre.qte > 0 %}
+                                            <span class="badge bg-success">Disponible</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Épuisé</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ path('app_livre_index') }}" class="btn btn-primary btn-lg">
+                    Voir tous les livres <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catégories -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Parcourir par catégorie</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="#" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="category-content">
+                            <h3 class="category-title">Romans</h3>
+                            <p class="category-count">125 livres</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1532012197267-da101efd3d0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="category-content">
+                            <h3 class="category-title">Science-Fiction</h3>
+                            <p class="category-count">89 livres</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                        <div class="category-content">
+                            <h3 class="category-title">Éducation</h3>
+                            <p class="category-count">156 livres</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Ce que disent nos lecteurs</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Une excellente bibliothèque en ligne avec une grande variété de livres. L'interface est intuitive et facile à utiliser.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sophie Martin" class="img-fluid">
+                            </div>
+                            <div class="author-info">
+                                <h5>Sophie Martin</h5>
+                                <p>Membre depuis 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Je trouve toujours les livres que je cherche. Le service est rapide et efficace. Je recommande vivement !</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Thomas Dubois" class="img-fluid">
+                            </div>
+                            <div class="author-info">
+                                <h5>Thomas Dubois</h5>
+                                <p>Membre depuis 2021</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">La meilleure bibliothèque en ligne que j'ai utilisée. La qualité des livres est exceptionnelle.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Laura Petit" class="img-fluid">
+                            </div>
+                            <div class="author-info">
+                                <h5>Laura Petit</h5>
+                                <p>Membre depuis 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Prêt à commencer votre lecture ?</h2>
+            <p class="cta-subtitle">Rejoignez des milliers de lecteurs satisfaits et accédez à notre vaste collection de livres dès maintenant.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </a>
+                <a href="{{ path('app_livre_index') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-book me-2"></i>Explorer la bibliothèque
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Animation au défilement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation des cartes au défilement
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Observer les éléments à animer
+            document.querySelectorAll('.book-card, .category-card, .testimonial-card').forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                observer.observe(el);
+            });
+        });
+    </script>
+{% endblock %}

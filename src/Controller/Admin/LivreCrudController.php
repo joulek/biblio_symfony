@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class LivreCrudController extends AbstractCrudController
 {
@@ -24,6 +25,9 @@ class LivreCrudController extends AbstractCrudController
 
             // ----- Champs simples -----
             TextField::new('titre', 'Titre'),
+            TextareaField::new('description', 'Description')
+                ->setRequired(false)
+                ->hideOnIndex(), // Cache dans la liste pour économiser de l'espace
             IntegerField::new('qte', 'Quantité'),
             MoneyField::new('prixunitaire', 'Prix unitaire')->setCurrency('TND'),
             DateField::new('datepub', 'Date de publication'),

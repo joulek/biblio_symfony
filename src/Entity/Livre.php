@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
 {
@@ -20,6 +19,9 @@ class Livre
 
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column]
     private ?int $qte = null;
@@ -40,14 +42,14 @@ class Livre
     #[ORM\JoinColumn(nullable: false)]
     private ?Editeur $editeur = null;
 
-    /**
-     * @var Collection<int, Auteur>
-     */
+    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class)]
+    private Collection $emprunts;
+
     #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
     #[Assert\Count(
-    min: 1,
-    minMessage: "Vous devez sélectionner au moins un auteur."
-)]
+        min: 1,
+        minMessage: "Vous devez sélectionner au moins un auteur."
+    )]
     private Collection $auteurs;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
@@ -56,143 +58,74 @@ class Livre
     public function __construct()
     {
         $this->auteurs = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
     }
 
+    public function getId(): ?int { return $this->id; }
 
-public function getStock(): int
-{
-    return $this->qte;
-}
+    public function getTitre(): ?string { return $this->titre; }
+    public function setTitre(string $titre): static { $this->titre = $titre; return $this; }
 
-public function setStock(int $stock): static
-{
-    $this->qte = $stock;
-    return $this;
-}
+    public function getDescription(): ?string { return $this->description; }
+    public function setDescription(?string $description): static { $this->description = $description; return $this; }
 
-    public function getImage(): ?string
+    public function getQte(): ?int { return $this->qte; }
+    public function setQte(int $qte): static { $this->qte = $qte; return $this; }
+
+    public function getPrixunitaire(): ?float { return $this->prixunitaire; }
+    public function setPrixunitaire(float $prixunitaire): static { $this->prixunitaire = $prixunitaire; return $this; }
+
+    public function getDatepub(): ?\DateTime { return $this->datepub; }
+    public function setDatepub(\DateTime $datepub): static { $this->datepub = $datepub; return $this; }
+
+    public function getIsbn(): ?int { return $this->isbn; }
+    public function setIsbn(int $isbn): static { $this->isbn = $isbn; return $this; }
+
+    public function getImage(): ?string { return $this->image; }
+    public function setImage(?string $image): static { $this->image = $image; return $this; }
+
+    public function getEditeur(): ?Editeur { return $this->editeur; }
+    public function setEditeur(?Editeur $editeur): static { $this->editeur = $editeur; return $this; }
+
+    /** 📌 Emprunts */
+    public function getEmprunts(): Collection { return $this->emprunts; }
+
+    public function addEmprunt(Emprunt $emprunt): static
     {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setLivre($this);
+        }
         return $this;
     }
 
-    public function getId(): ?int
+    public function removeEmprunt(Emprunt $emprunt): static
     {
-        return $this->id;
-    }
-
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
-
-    public function setTitre(string $titre): static
-    {
-        $this->titre = $titre;
-
+        if ($this->emprunts->removeElement($emprunt)) {
+            if ($emprunt->getLivre() === $this) {
+                $emprunt->setLivre(null);
+            }
+        }
         return $this;
     }
 
-    public function getQte(): ?int
-    {
-        return $this->qte;
-    }
-
-    public function setQte(int $qte): static
-    {
-        $this->qte = $qte;
-
-        return $this;
-    }
-
-    public function getPrixunitaire(): ?float
-    {
-        return $this->prixunitaire;
-    }
-
-    public function setPrixunitaire(float $prixunitaire): static
-    {
-        $this->prixunitaire = $prixunitaire;
-
-        return $this;
-    }
-
-    public function getDatepub(): ?\DateTime
-    {
-        return $this->datepub;
-    }
-
-    public function setDatepub(\DateTime $datepub): static
-    {
-        $this->datepub = $datepub;
-
-        return $this;
-    }
-
-    public function getIsbn(): ?int
-    {
-        return $this->isbn;
-    }
-
-    public function setIsbn(int $isbn): static
-    {
-        $this->isbn = $isbn;
-
-        return $this;
-    }
-
-    public function getEditeur(): ?Editeur
-    {
-        return $this->editeur;
-    }
-
-    public function setEditeur(?Editeur $editeur): static
-    {
-        $this->editeur = $editeur;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Auteur>
-     */
-    public function getAuteurs(): Collection
-    {
-        return $this->auteurs;
-    }
+    /** 📌 Auteurs */
+    public function getAuteurs(): Collection { return $this->auteurs; }
 
     public function addAuteur(Auteur $auteur): static
     {
         if (!$this->auteurs->contains($auteur)) {
             $this->auteurs->add($auteur);
         }
-
         return $this;
     }
 
     public function removeAuteur(Auteur $auteur): static
     {
         $this->auteurs->removeElement($auteur);
-
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): static
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
-
-
+    public function getCategorie(): ?Categorie { return $this->categorie; }
+    public function setCategorie(?Categorie $categorie): static { $this->categorie = $categorie; return $this; }
 }

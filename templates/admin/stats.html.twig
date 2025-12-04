@@ -1,0 +1,94 @@
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* === 📚 Livres ajoutés par mois === */
+    const livresCanvas = document.getElementById('livresMois');
+    if (livresCanvas) {
+        new Chart(livresCanvas, {
+            type: 'bar',
+            data: {
+                labels: ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],
+                datasets: [{
+                    label: 'Livres ajoutés',
+                    data: {{ livresPerMonth|json_encode|raw }},
+                    backgroundColor: '#4c0f1a'
+                }]
+            }
+        });
+    }
+
+    /* === 📈 Emprunts par mois === */
+    const empruntsCanvas = document.getElementById('empruntsMois');
+    if (empruntsCanvas) {
+        new Chart(empruntsCanvas, {
+            type: 'line',
+            data: {
+                labels: ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],
+                datasets: [{
+                    label: 'Emprunts',
+                    data: {{ empruntsPerMonth|json_encode|raw }},
+                    borderWidth: 3,
+                    borderColor: '#d41c6d',
+                    fill: false
+                }]
+            }
+        });
+    }
+
+    /* === 🥧 Catégories === */
+    const catCanvas = document.getElementById('catChart');
+    if (catCanvas) {
+        new Chart(catCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: {{ catLabels|json_encode|raw }},
+                datasets: [{
+                    data: {{ catCounts|json_encode|raw }},
+                    backgroundColor: ['#d41c6d','#a60f55','#6f0f3a','#4c0f1a','#9b1d49']
+                }]
+            }
+        });
+    }
+
+    /* === 🟦 Top auteurs === */
+    const auteursCanvas = document.getElementById('topAuteurs');
+    if (auteursCanvas) {
+        new Chart(auteursCanvas, {
+            type: 'bar',
+            data: {
+                labels: {{ topAuteurLabels|json_encode|raw }},
+                datasets: [{
+                    label: 'Emprunts',
+                    data: {{ topAuteurCounts|json_encode|raw }},
+                    backgroundColor: '#6f0f3a'
+                }]
+            }
+        });
+    }
+
+});
+</script>
+
+<style>
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.chart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.chart-card h3 {
+    color: #4c0f1a;
+    margin-bottom: 12px;
+}
+</style>
+{% endblock %}

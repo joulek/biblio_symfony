@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes emprunts{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Mes emprunts</h1>
+
+        {% if emprunts is empty %}
+            <div class="alert alert-info">
+                Vous n'avez aucun emprunt en cours.
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Livre</th>
+                            <th>Date d'emprunt</th>
+                            <th>Date de retour prévue</th>
+                            <th>Date de retour effective</th>
+                            <th>Statut</th>
+                            <th>Note</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emprunt in emprunts %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('app_livre_show', {'id': emprunt.livre.id}) }}">
+                                        {{ emprunt.livre.titre }}
+                                    </a>
+                                </td>
+                                <td>{{ emprunt.dateEmprunt|date('d/m/Y') }}</td>
+                                <td>{{ emprunt.dateRetourPrevue|date('d/m/Y') }}</td>
+                                <td>{{ emprunt.dateRetourReelle ? emprunt.dateRetourReelle|date('d/m/Y') : '-' }}</td>
+                                <td>
+                                    <span class="badge bg-{{ emprunt.statut == 'en_cours' ? 'primary' : 'success' }}">
+                                        {{ emprunt.statut == 'en_cours' ? 'En cours' : 'Retourné' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if emprunt.statut == 'retourne' %}
+                                        {% if emprunt.note %}
+                                        <div class="rating-stars">
+                                            {% for i in 1..5 %}
+                                                <i class="fas fa-star{% if i > emprunt.note %}-o{% endif %}" 
+                                                   style="color: {% if i <= emprunt.note %}#ffc107{% else %}#ddd{% endif %}">
+                                                </i>
+                                            {% endfor %}
+                                            <span class="ms-2 text-muted">{{ emprunt.note }}/5</span>
+                                        </div>
+                                        {% else %}
+                                            <form method="post" action="{{ path('app_emprunt_noter', {'id': emprunt.id}) }}" class="d-inline">
+                                                <div class="rating">
+                                                    {% for i in 5..1 %}
+                                                        <input type="radio" id="star{{ i }}_{{ emprunt.id }}" name="note" value="{{ i }}">
+                                                        <label for="star{{ i }}_{{ emprunt.id }}">
+                                                            <i class="far fa-star"></i>
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary mt-1">Noter</button>
+                                            </form>
+                                        {% endif %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if emprunt.statut == 'en_cours' %}
+                                        <a href="{{ path('app_emprunt_retourner', {'id': emprunt.id}) }}" 
+                                           class="btn btn-sm btn-success"
+                                           onclick="return confirm('Êtes-vous sûr de vouloir marquer ce livre comme retourné ?')">
+                                            <i class="fas fa-undo"></i> Retourner
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    <style>
+        /* Style pour les étoiles de notation */
+        .rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            gap: 2px;
+            unicode-bidi: bidi-override;
+            direction: rtl;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: color 0.2s;
+        }
+        /* Style pour les étoiles sélectionnées */
+        .rating input:checked ~ label {
+            color: #ffc107;
+        }
+        /* Style pour le survol */
+        .rating label:hover,
+        .rating label:hover ~ label,
+        .rating input:checked ~ label {
+            color: #ffc107;
+        }
+        /* Style pour les étoiles déjà notées */
+        .rating-stars {
+            display: inline-flex;
+            gap: 2px;
+        }
+        .rating-stars .fas {
+            color: #ffc107;
+        }
+        .rating-stars .far {
+            color: #ddd;
+        }
+    </style>
+{% endblock %}

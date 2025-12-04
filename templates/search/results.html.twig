@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de recherche - {{ query }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/search.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="search-results">
+    <div class="search-header">
+        <h1>Résultats de recherche</h1>
+        <p class="search-query">Vous avez recherché : "{{ query }}"</p>
+    </div>
+
+    {# ---------------- FILTRES ---------------- #}
+    <div class="search-filters">
+        <form method="get" action="{{ path('app_search') }}" class="filters-form">
+            <input type="hidden" name="q" value="{{ query }}">
+
+            <div class="filter-group">
+                <label for="type">Type :</label>
+                <select name="type" id="type" class="form-select">
+                    <option value="all" {{ type == 'all' ? 'selected' : '' }}>Tous les types</option>
+                    <option value="livres" {{ type == 'livres' ? 'selected' : '' }}>Livres</option>
+                    <option value="auteurs" {{ type == 'auteurs' ? 'selected' : '' }}>Auteurs</option>
+                    <option value="categories" {{ type == 'categories' ? 'selected' : '' }}>Catégories</option>
+                    <option value="editeurs" {{ type == 'editeurs' ? 'selected' : '' }}>Éditeurs</option>
+                </select>
+            </div>
+
+            {% if type == 'all' or type == 'livres' %}
+            <div class="filter-group">
+                <label for="sort">Trier par :</label>
+                <select name="sort" id="sort" class="form-select">
+                    <option value="relevance" {{ sort == 'relevance' ? 'selected' : '' }}>Pertinence</option>
+                    <option value="title_asc" {{ sort == 'title_asc' ? 'selected' : '' }}>Titre (A-Z)</option>
+                    <option value="title_desc" {{ sort == 'title_desc' ? 'selected' : '' }}>Titre (Z-A)</option>
+                    <option value="date_asc" {{ sort == 'date_asc' ? 'selected' : '' }}>Date (anciens d'abord)</option>
+                    <option value="date_desc" {{ sort == 'date_desc' ? 'selected' : '' }}>Date (récents d'abord)</option>
+                </select>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
+        </form>
+    </div>
+
+    {# ---------------- RÉSULTATS ---------------- #}
+    <div class="search-results-container">
+
+        {# ======================= LIVRES ======================= #}
+        {% if (type == 'all' or type == 'livres') and results.livres|length > 0 %}
+            <section class="results-section">
+                <h2 class="section-title">
+                    <i class="fas fa-book"></i>
+                    Livres ({{ results.livres.getTotalItemCount() }})
+                </h2>
+
+                <div class="results-grid">
+                    {% for livre in results.livres %}
+                        <div class="result-card">
+                            <img src="{{ asset('uploads/livres/' ~ livre.image) }}"
+                                 alt="{{ livre.titre }}"
+                                 class="result-image">
+
+                            <div class="result-content">
+                                <h3 class="result-title">{{ livre.titre }}</h3>
+
+                                {% if livre.auteurs is defined and livre.auteurs|length > 0 %}
+                                    <p class="text-muted">
+                                        {% for auteur in livre.auteurs %}
+                                            {{ auteur.prenom }} {{ auteur.nom }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+
+                                <div class="mt-auto">
+                                    <a href="{{ path('app_livre_show', { id: livre.id }) }}" class="view-link">
+                                        Voir les détails <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if results.livres.paginationData.pageCount > 1 %}
+                    <div class="pagination-wrapper">
+                        {{ knp_pagination_render(results.livres) }}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+
+
+        {# ======================= AUTEURS ======================= #}
+        {% if (type == 'all' or type == 'auteurs') and results.auteurs|length > 0 %}
+            <section class="results-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-edit"></i>
+                    Auteurs ({{ results.auteurs.getTotalItemCount() }})
+                </h2>
+
+                <ul class="results-list">
+                    {% for auteur in results.auteurs %}
+                        <li>
+                            <span>{{ auteur.prenom }} {{ auteur.nom }}</span>
+                            <a href="{{ path('app_auteur_show', { id: auteur.id }) }}" class="view-link">
+                                Voir <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if results.auteurs.paginationData.pageCount > 1 %}
+                    <div class="pagination-wrapper">
+                        {{ knp_pagination_render(results.auteurs) }}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+
+
+        {# ======================= CATÉGORIES ======================= #}
+        {% if (type == 'all' or type == 'categories') and results.categories|length > 0 %}
+            <section class="results-section">
+                <h2 class="section-title">
+                    <i class="fas fa-tags"></i>
+                    Catégories ({{ results.categories.getTotalItemCount() }})
+                </h2>
+
+                <ul class="results-list">
+                    {% for categorie in results.categories %}
+                        <li>
+                            <span>{{ categorie.designation }}</span>
+                            <a href="{{ path('app_categorie_show', { id: categorie.id }) }}" class="view-link">
+                                Voir <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if results.categories.paginationData.pageCount > 1 %}
+                    <div class="pagination-wrapper">
+                        {{ knp_pagination_render(results.categories) }}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+
+
+        {# ======================= ÉDITEURS ======================= #}
+        {% if (type == 'all' or type == 'editeurs') and results.editeurs|length > 0 %}
+            <section class="results-section">
+                <h2 class="section-title">
+                    <i class="fas fa-building"></i>
+                    Éditeurs ({{ results.editeurs.getTotalItemCount() }})
+                </h2>
+
+                <ul class="results-list">
+                    {% for editeur in results.editeurs %}
+                        <li>
+                            <span>{{ editeur.nom }}</span>
+                            <a href="{{ path('app_editeur_show', { id: editeur.id }) }}" class="view-link">
+                                Voir <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if results.editeurs.paginationData.pageCount > 1 %}
+                    <div class="pagination-wrapper">
+                        {{ knp_pagination_render(results.editeurs) }}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+
+
+        {# ======================= AUCUN RÉSULTAT ======================= #}
+        {% if
+            results.livres|length == 0 and
+            results.auteurs|length == 0 and
+            results.categories|length == 0 and
+            results.editeurs|length == 0
+        %}
+            <div class="no-results">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>Aucun résultat trouvé pour "{{ query }}"</h3>
+                <p>Essayez d'autres termes de recherche ou explorez notre catalogue.</p>
+
+                <a href="{{ path('app_livre_index') }}" class="view-link">
+                    <i class="fas fa-book-open"></i> Voir tous les livres
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

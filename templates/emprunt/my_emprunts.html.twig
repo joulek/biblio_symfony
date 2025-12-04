@@ -40,10 +40,12 @@
 
                     <td>
                         {% if e.statut == 'en_cours' %}
-                            <a href="{{ path('livre_retourner', { id: e.id }) }}"
-                               class="btn btn-success btn-sm">
-                                Retourner
-                            </a>
+                            <form action="{{ path('app_emprunt_retourner', {'id': e.id}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('retourner' ~ e.id) }}">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Retourner
+                                </button>
+                            </form>
                         {% else %}
                             —
                         {% endif %}

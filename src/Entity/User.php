@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Emprunt>
      */
-    #[ORM\OneToMany(targetEntity: Emprunt::class, mappedBy: 'relation')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Emprunt::class, orphanRemoval: true)]
     private Collection $emprunts;
 
     public function __construct()
@@ -130,22 +130,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->commandes;
     }
 
-    public function addCommande(Commande $commande): static
+    public function addCommande(Commande $commande): self
     {
         if (!$this->commandes->contains($commande)) {
             $this->commandes->add($commande);
             $commande->setUser($this);
         }
+
         return $this;
     }
 
-    public function removeCommande(Commande $commande): static
+    public function removeCommande(Commande $commande): self
     {
         if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
             if ($commande->getUser() === $this) {
                 $commande->setUser(null);
             }
         }
+
         return $this;
     }
 
